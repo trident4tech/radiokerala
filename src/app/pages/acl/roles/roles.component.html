@@ -1,0 +1,10 @@
+  <nb-card>
+      <nb-card-header>Access Control Roles</nb-card-header>
+      <nb-card-body>
+        <div class="buttons-row">
+          <button  *ngFor="let item of aclArray" nbButton status="primary" outline (click)="gotoNextPage(item['name'],config.doEncrypt(item['id']+'' ))">
+            {{item['name']}}
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>

@@ -1,0 +1,31 @@
+<nb-card>  
+  <nb-card-header>Edit {{segment}}<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+      <form  #form="ngForm" (ngSubmit)="doEdit(form)">
+        <div class="row">
+  		<div class="form-group col-sm-6" *ngFor="let item of fields; let i=index;">
+            <label for="name" class="label  col-form-label"> {{item.value.label}}</label>
+           
+              <input [class]="(item.value.rule.includes('required'))?'icon_mandatory':''" *ngIf="item.value.control=='MASTER_TEXT_BOX'" ngModel name="{{item.value.name}}" required type="text" nbInput fullWidth  #{{item.value.name}} [status]="item.value.validationmessage!==''?'danger':'basic'"  placeholder="Enter the {{item.value.label}}" [ngModel]="editdata[item.field]"/>
+              <nb-select  [class]="(item.value.rule.includes('required'))?'icon_mandatory':''" *ngIf="item.value.values" placeholder="Select {{item.value.label}}"  [status]="item.value.validationmessage!==''?'danger':'basic'" name="{{item.value.name}}" [(selected)]="selfields[item.field]" (selectedChange)="changeData($event,item.field)" >
+                 <nb-option *ngFor="let opt of elmt[item.value.name] " value="{{opt['value']}}">{{opt['label']}}</nb-option>
+                 </nb-select>
+
+            <nb-select [class]="(item.value.rule.includes('required'))?'icon_mandatory':''" *ngIf="fkeyvalues[item.value.name]" placeholder="Select {{item.value.label}}"  [status]="item.value.validationmessage!==''?'danger':'basic'"  [(selected)]="selfields[item.field]" (selectedChange)="changeData($event,item.field)"   >
+                   <nb-option *ngFor="let opt of elmt[item.value.name] " value="{{opt['value']}}">{{opt['label']}}</nb-option>
+            </nb-select>
+
+              <span *ngIf="item.value.validationmessage"><font class='error'>{{item.value.validationmessage}}</font></span>
+           
+            </div>
+        </div>
+<div class="row"><div class="form-group col-sm-6"><button class="cancel" nbButton status="basic" (click)="dismiss()" >Close</button></div>
+    <div class="form-group col-sm-6">               
+     <button nbButton status="primary" class='right' type = "submit">Submit</button>
+               
+            </div> </div></form>
+
+  </nb-card-body>
+    
+</nb-card>
+

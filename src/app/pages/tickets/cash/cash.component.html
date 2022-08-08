@@ -1,0 +1,10 @@
+<nb-card>  
+  <nb-card-header style="text-align: center;">Total Amount : Rs.{{totalAmount}}<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+    <p><input type="text" nbInput fullWidth fieldSize="large" placeholder="0"  style="text-align: center;" placeholder="Enter Received Cash" [(ngModel)]="rec" (input)="calcBalance()"></p>
+    <p align="center">{{balance}}</p>
+    <p align="center"><button nbButton status="success"  size="large" (click)="dismiss()"  >Proceed</button></p>
+
+  </nb-card-body>
+    
+</nb-card>

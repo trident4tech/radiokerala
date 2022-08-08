@@ -1,0 +1,485 @@
+<h4>Template page</h4>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Usermanagement</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Users</li>
+  </ol>
+</nav>
+
+<nb-card>
+      <nb-card-header>
+
+
+        <span class="float-left">User list</span> 
+        <span class="float-right">
+          <nb-select multiple placeholder="Select Columns">
+          <nb-option value="1">Option 1</nb-option>
+          <nb-option value="2">Option 2</nb-option>
+          <nb-option value="3">Option 3</nb-option>
+          <nb-option value="4">Option 4</nb-option>
+        </nb-select> &nbsp;
+          <button nbButton status="secondary" (click)="togglea()" ><i class="fa fa-filter"></i></button> &nbsp;
+          <button nbButton  status="primary" (click)="add()">Add</button></span>
+
+
+      </nb-card-header>
+      <nb-card-body>
+
+                        <nb-accordion>
+      <nb-accordion-item #item>
+        <nb-accordion-item-body>
+                      <h6>Filter</h6>
+                      <div class="row mt-3">
+                      <div class="col-sm-3 d-flex align-items-center">
+                        <div class="form-group">
+                          <input type="text" nbInput fullWidth placeholder="Name">
+                        </div>
+                      </div>
+                      <div class="col-sm-3 d-flex align-items-center">
+                        <div class="form-group">
+                          <input type="text" nbInput fullWidth placeholder="Username">
+                        </div>
+                      </div>
+                      <div class="col-sm-3 d-flex align-items-center">
+                        <div class="form-group">
+                      <nb-select selected="1">
+                        <nb-option value="1">Select Category</nb-option>
+                        <nb-option value="2">Option 1</nb-option>
+                        <nb-option value="3">Option 2</nb-option>
+                      </nb-select>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 d-flex align-items-center">
+                        <div class="form-group">
+                          <input type="text" nbInput fullWidth placeholder="Status">
+                        </div>
+                      </div>
+                    </div></nb-accordion-item-body></nb-accordion-item></nb-accordion>
+
+
+      	<div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>               
+                <th>#</th>
+                <th>Action</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Usergroup</th>
+                <th>Office</th>
+                <th>Agreement Date Weight</th>
+
+                <th>Agreement Date Weight</th>
+
+                <th>Agreement Date Weight</th>
+
+                <th>Agreement Date Weight</th>
+
+                <th>Agreement Date Weight</th>
+
+                <th>Agreement Date Weight</th>
+
+                <th>Agreement Date Weight</th>
+
+                <th>Usergroup</th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            	<tr><td>01</td>
+                  <td> <button nbButton size="small" [nbContextMenu]="itemsa" nbContextMenuTrigger="click" (click)="clickbtn(1)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+            		
+
+            		<td>Rajan</td>
+            		<td>raj</td>
+            		<td>raj01@gmail.com</td>
+            		<td>9991234567</td>
+            		<td>Counter staff</td>
+            		<td>Karlad</td>
+            		<td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+            	
+            	</tr>
+              <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr> <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+               <tr>
+                 <td>01</td><td> <button nbButton [nbContextMenu]="itemsa" nbContextMenuTrigger="click"(click)="clickbtn(2)">
+     <i class="fa fa-cog"></i>
+    </button></td>
+                
+            		
+
+                <td>Rajan</td>
+                <td>raj</td>
+                <td>raj01@gmail.com</td>
+                <td>9991234567</td>
+                <td>Counter staff</td>
+                <td>Karlad</td>
+                <td>Counter staff</td>
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Agreement Date Weight</td>
+
+                <td>Usergroup</td>
+                 
+              </tr>
+            </tbody>
+        </table>
+      </div>
+
+      <nav class="mt-3">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+      </nb-card-body>
+  </nb-card>

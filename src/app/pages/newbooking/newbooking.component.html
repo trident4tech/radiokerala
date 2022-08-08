@@ -1,0 +1,199 @@
+	<nb-card>
+    <nb-card-header>Ticketing</nb-card-header>
+      <nb-card-body>        
+        <div class="row">      
+        <div class="input-group col-md-6 px-0"> <input autocomplete="off"  (focusout)="showclassdetail($event)" (keypress)="config.numericalphaonKeyPress($event)" id="autoInput" name="autoInput" (keydown)="move($event)" #autoInput
+
+      nbInput
+      type="text" fullWidth
+      (input)="onChange()"
+      [nbAutocomplete]="auto" fieldSize="large" class="rounded-0" placeholder="Ticket item"  />
+
+    <nb-autocomplete   (selectedChange)="onSelectionChange($event)" [activeFirst]="true" #auto >
+
+      <nb-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+        {{ option }}
+      </nb-option>
+
+    </nb-autocomplete></div>
+        <div class="input-group col-md-2 px-0"><input  autocomplete="off" (input)="showclassdetail($event)" type="text" (keydown)="move($event)"  (keypress)="config.numericonKeyPress($event)" nbInput fullWidth fieldSize="large" class="rounded-0" placeholder="Qty" id="quantity" name="quantity" min='0'  [(ngModel)]="quantity"  ></div>
+        <div  class="col-md-2 border d-flex align-items-center justify-content-end">{{rate}}</div>
+        <div class="col-md-2 border d-flex align-items-center justify-content-end">{{itemqty}}</div>
+      </div>
+      </nb-card-body>
+    </nb-card>
+
+<nb-alert status="info" *ngIf="paymode==config.CASH" align="center" >Cash</nb-alert>
+<nb-alert status="success" *ngIf="paymode==config.UPI" align="center" >UPI</nb-alert>
+   <nb-alert status="primary" *ngIf="paymode==config.POS" align="center">POS</nb-alert>
+    <nb-card>
+      <nb-card-body>
+
+        <div class="row">
+        <div class="col-md-6 border d-flex align-items-center bg-primary text-white p-1"><strong>Avtivity</strong></div>
+        <div class="col-md-2 border d-flex align-items-center bg-primary text-white p-1"><strong>Number</strong></div>
+        <div class="col-md-2 border d-flex align-items-center justify-content-end bg-primary text-white p-1"><strong>Rate</strong></div>
+        <div class="col-md-2 border d-flex align-items-center justify-content-end bg-primary text-white p-1"><strong>Amount</strong></div>
+      </div>
+
+      <div class="row" *ngFor="let item of tickets;let i =index;">
+        <div class="col-md-6 border d-flex align-items-center"><button nbButton ghost status="danger"  size="small" (click)="delItem(i)"><nb-icon icon="close-outline" status="danger"></nb-icon></button>&nbsp;{{item.act}}</div>
+        <div class="input-group col-md-2 px-0"><input type="text" value={{item.quantity}} min='0' nbInput fullWidth fieldSize="small" class="rounded-0" placeholder="Qty" #item_{{i}} id="item_{{i}}" name='item_{{i}}' (keydown)="movenext($event,i+1,i-1)" (keypress)="config.numericonKeyPress($event)" (focusout)="calcitemtotal($event,i)"></div>
+        <div class="col-md-2 border d-flex align-items-center justify-content-end">{{item.rate}}</div>
+        <div class="col-md-2 border d-flex align-items-center justify-content-end">{{item.total}}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 d-flex align-items-center justify-content-end py-2"><strong>Total</strong></div>
+        <div class="col-md-2 border d-flex align-items-center py-2"><strong>{{totalQuantity}}</strong></div>
+        <div class="col-md-2 border d-flex align-items-center justify-content-end py-2"><strong>{{totalRate}}</strong></div>
+        <div class="col-md-2 border d-flex align-items-center justify-content-end py-2"><strong>{{totalAmount}}</strong></div>
+      </div>
+
+      </nb-card-body>
+    </nb-card>
+
+
+        <nb-card>
+          <nb-card-body>
+          <div class="row">
+          <div class="col-md-4"><p align="center">Total Rate</p><h4 align="center">{{totalAmount}}</h4></div>
+          <div class="col-md-4"><p align="center"><span id='mode'>Received Cash</span></p>
+            <div class="form-group">
+              <input type="text" id="rec" name="rec" (keypress)="config.numericonKeyPress($event)" nbInput fullWidth placeholder="Enter Received Cash" [(ngModel)]="rec" (input)="calcBalance()" (keydown)="moverec($event,tickets.length-1)"><span *ngIf="errorResponseArray['rec']"><font class='error'>{{errorResponseArray['rec']}}</font></span>
+            </div>
+          </div>
+          <div class="col-md-4"><p align="center">Balance Cash</p><h4 align="center">{{balance}}</h4></div>
+        </div>
+      </nb-card-body>
+      <nb-card-footer>
+        <button (keydown)="move($event)" id="cancel" name="cancel" nbButton status="basic" class="mr-2 float-left" (click)="clearData()">Cancel</button>
+        <button nbButton status="primary" class="float-right" [attr.disabled]="totalAmount==0 || !showPrintBtn ? '' : null"  (click)="doBooking()" id="print" name="print" (keydown)="move($event)">Print</button>
+      </nb-card-footer>
+      </nb-card>
+
+
+<div  id="print-content" style='max-width:500px;background-color:#fff;display: none;'>
+  <div  *ngFor="let data of ticketprint;let ind =index;">
+
+
+
+
+<table style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%" cellspacing="0" cellpadding="3" border="0">
+  <tbody><tr>
+    <td align="center"><strong>{{appTitle}}</strong></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10px;" align="center">{{data['destName']}}, {{data['destPlace']}} - {{data['destPin']}}<br> Ph: {{data['destPhone']}}<br><span *ngIf="destGst!=''">GSTIN:{{destGst}}</span></td>
+  </tr>
+  <tr>
+    <td>
+    <table style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold" width="100%" cellspacing="0" cellpadding="3" border="1">
+        <tbody>
+          <tr style="font-size: 12px;">
+            <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
+            <th style=" border-bottom: solid 2px;" align="left">Qty</th>
+            <th style=" border-bottom: solid 2px;" align="left">Price</th>
+          </tr>
+          <tr *ngFor="let classdata of data['classdata'];let j =index;">
+            <td>{{classdata['className']}}</td>
+            <td>{{classdata.classQuantity}}</td>
+            <td>{{classdata.classRate*classdata.classQuantity}}</td>
+          </tr>          
+        </tbody>
+    </table></td>
+  </tr>
+  <tr>
+    <td style="padding-top: 10px;" valign="middle" align="center"><strong>Price ----- Rs. {{data['actualrate']}}</strong></td>
+  </tr>
+  <tr>
+    <td align="center"><hr color="#000000"></td>
+  </tr>
+  <tr>
+    <td style="font-size:12px;" align="center"><table width="100%" cellspacing="0" cellpadding="3" border="0">
+      <tbody>
+        <tr>
+          <td width="20%" valign="top"> <div class="qrcodeImage"><qrcode [qrdata]="data['tpNumbernew']" [width]="120" [errorCorrectionLevel]="'M'" elementType="'svg'"></qrcode> </div> </td>
+          <td width="80%" valign="top"><table width="100%" cellspacing="0" cellpadding="3" border="0">
+            <tbody>
+              <tr>
+                <td style="font-size:11px;"><strong>{{data['tpNumber']}} | {{data['date']}} {{data['time']}}</strong></td>
+              </tr>
+              <tr>
+                <td style="font-size:10px;">*This ticket is not retainable or refundable<br>
+**Keep this ticket till you leave the destination</td>
+              </tr>
+               <tr *ngIf="allowTerms==config.OTYES && terms.length>0"><td>
+                 <table><tr *ngFor="let term of terms;let i=index;" style="font-size:10px;line-height: 7px;" >
+                  <td>{{term}}</td>
+                 </tr></table></td>
+              </tr>
+              
+              <tr >
+                <td style="font-size:10px;" class='terms'>
+                  <table><tr *ngFor="let classdata of cgsts[ind];let j =index;" style="font-size:10px;line-height: 7px;" >
+                    <ng-template [ngIf]="cgstAmount[ind][classdata]>0">
+                        <td >CGST @ {{classdata}}% on {{cgstTotAmount[ind][classdata]}} : </td><td>{{cgstAmount[ind][classdata]}}</td>
+                    </ng-template>
+                    </tr></table>
+                    <table><tr *ngFor="let classdata of sgsts[ind];let j =index;" style="font-size:10px;line-height: 7px;" >
+                    <ng-template [ngIf]="sgstAmount[ind][classdata]>0">
+                        <td >SGST @ {{classdata}}% on {{sgstTotAmount[ind][classdata]}} : </td><td>{{sgstAmount[ind][classdata]}}</td>
+                    </ng-template>
+                    </tr></table>
+                      </td>
+              </tr>
+              
+              <tr>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="font-size:11px;">{{data['destwebsite']}}</td>
+              </tr>
+             
+            </tbody>
+          </table></td>
+        </tr>
+      </tbody>
+    </table></td>
+  </tr>
+</tbody></table>
+<div style="page-break-after: always" *ngIf="foil==this.config.OTYES"></div>
+  <table style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%" cellspacing="0" cellpadding="3" border="0" *ngIf="foil==this.config.OTYES">
+  <tbody>
+    <tr>
+      <td style="font-size:12px;" align="center"><strong>{{data['destName']}} - {{data['destPlace']}}</strong><br><span *ngIf="destGst!=''">GSTIN:{{destGst}}</span></td>
+    </tr>
+    <tr>
+      <td style="font-size:12px;" align="center">Ticket No. {{data['tpNumber']}} | {{data['date']}} {{data['time']}}</td>
+    </tr>
+    <tr>
+      <td>
+      <table style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold" width="100%" cellspacing="0" cellpadding="3" border="1">
+        <tbody>
+          <tr style="font-size: 12px;">
+            <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
+            <th style=" border-bottom: solid 2px;" align="left">Qty</th>
+            <th style=" border-bottom: solid 2px;" align="left">Price</th>
+          </tr>
+           <tr *ngFor="let classdata of data['classdata'];let j =index;">
+            <td>{{classdata.className}}</td>
+            <td>{{classdata.classQuantity}}</td>
+            <td>{{classdata.classRate*classdata.classQuantity}}</td>
+          </tr> 
+        </tbody>
+      </table></td>
+    </tr>
+    <tr>
+      <td valign="middle" align="center"><strong>Price ------- Rs.{{data['actualrate']}}</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+<div *ngIf="ticketprint.length!=(i+1) && ticketprint.length>1" style="page-break-before: always;"></div>
+</div></div>

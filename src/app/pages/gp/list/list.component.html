@@ -1,0 +1,39 @@
+<nb-card>
+    <nb-card-header>
+        <span class="float-left">
+            <h6>GP Management </h6>
+        </span> 
+        <span *ngIf="this.config.checkAccess('Add GP')" class="float-right"><button nbButton status="success" (click)="add()">Add </button></span>
+    </nb-card-header>
+
+    <nb-card-body>
+        <div class="row ">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Action</th>
+                            <th>Name</th>
+                            <th>District</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of config.itemdata;let i=index;">
+                            <td>{{i+1}}</td>
+                            <td>
+                                <i *ngIf="this.config.checkAccess('Edit GP')" class="fa fa-edit" (click)="edit( item )"></i>
+                                <i *ngIf="this.config.checkAccess('Delete GP')" class="fa fa-trash" (click)="delete( item )"></i>
+                            </td>
+                            <td> {{item['name']}}</td>
+                            <td> {{item['district']}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </nb-card-body>
+</nb-card>

@@ -1,0 +1,54 @@
+<div class="row">
+<div class="col-md-12 col-lg-6 col-xxxl-6 list-card-small">
+    <nb-card status="info">
+    	<nb-card-header>
+       Users - {{counter}}
+      </nb-card-header>
+      <nb-card-body>
+    <div class="row ">
+      <div class="table-responsive"  >
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+              <td>
+              	<div *ngFor="let item of users; let i=index;" >   
+    <material-slide-toggle 
+    [checked]="item.status" 
+    (change)="changeUserStatus(item)" >
+</material-slide-toggle>{{item.user}}</div>
+</td> 
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+      </nb-card-body>
+  </nb-card>
+</div>
+<div class="col-md-12 col-lg-6 col-xxxl-6 list-card-small">
+    <nb-card status="info">
+    	<nb-card-header>
+       Attractions - {{counter}}
+      </nb-card-header>
+      <nb-card-body>
+    <div class="row ">
+      <div class="table-responsive"  >
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+<td>
+              	<div *ngFor="let item of attractions; let i=index;" >   
+    <material-slide-toggle 
+    [checked]="item.status" 
+    (change)="changeAttrStatus(item)" >
+</material-slide-toggle>{{item.attrname}}</div>
+</td> 
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+      </nb-card-body>
+  </nb-card>
+</div>
+</div>

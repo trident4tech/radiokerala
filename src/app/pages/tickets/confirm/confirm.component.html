@@ -1,0 +1,10 @@
+<nb-card style='width:350px;height:200px;'>
+  <nb-card-header style='background-color:#3199f5 '>Please Confirm</nb-card-header>
+  <nb-card-body>
+  	{{title}}
+  </nb-card-body>
+  <nb-card-footer>
+    <button tabindex="-1" class="cancel" nbButton status="basic" (click)="cancel()" (keydown)="move($event)" id="cancelprint" name="cancelprint">Cancel</button>
+    <button nbButton status="primary" class='right' (click)="confirmaction()" (keydown)="moveprev($event)" id="proceed" name="proceed" autofocus="" tabindex="0">Proceed</button>
+  </nb-card-footer>
+</nb-card>

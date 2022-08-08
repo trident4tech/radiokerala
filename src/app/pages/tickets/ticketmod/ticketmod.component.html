@@ -1,0 +1,12 @@
+<nb-card>  
+  <nb-card-header style="text-align: center;">{{detail.act}}<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+    <form  #form="ngForm" >
+    <p align="center"><button tabindex=2 nbButton status="basic" size="large"  (click)="update(config.OTYES,form)"><nb-icon icon="plus"></nb-icon></button></p>
+    <p><input type="text"  name="tno" tabindex=1 id="tno" autofocus="autofocus" onfocus="this.select()" #tno  nbInput fullWidth fieldSize="large" placeholder="0"  style="text-align: center;" [ngModel]="detail.quantity" ></p>
+    <p align="center"><button nbButton tabindex=3 status="basic"  (click)="update(config.OTNO,form)" size="large" [disabled]="detail.quantity==0"><nb-icon icon="minus"></nb-icon></button></p>
+    <p align="center"><button tabindex=4 nbButton status="success"  size="large" type = "submit" (click)="doQuantitySave(form)">Update</button></p>
+</form>
+  </nb-card-body>
+    
+</nb-card>

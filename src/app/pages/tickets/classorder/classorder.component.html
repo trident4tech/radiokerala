@@ -1,0 +1,18 @@
+<nb-card>
+<nb-card-header>
+        <span class="float-left"><h6>Class Ordering (Drag & Drop)</h6></span>
+      </nb-card-header>
+      <nb-card-body>
+<div class="example-container">
+
+  <div
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="options"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of options" cdkDrag>{{item}}</div>
+  </div>
+</div>
+</nb-card-body>
+</nb-card>

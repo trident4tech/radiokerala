@@ -1,0 +1,77 @@
+<nb-card>  
+  <nb-card-header>View Destination<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+  		<div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Destination</label>
+            <div class="col-sm-7">{{detail.dest_name}}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Destination Code</label>
+            <div class="col-sm-7">{{detail.dest_code}}
+            </div>
+          </div>
+
+           <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Is Allowed for Booking</label>
+            <div class="col-sm-7" *ngIf="detail.dest_is_public == 1">Not </div>
+            <div class="col-sm-7" *ngIf="detail.dest_is_public == 2">Allowed</div>
+          </div>
+
+           <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">GSTIN</label>
+            <div class="col-sm-7">{{detail.dest_gstin}}
+            </div>
+          </div>
+
+           <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Booking Start Day</label>
+            <div class="col-sm-7">{{detail.dest_book_start_day}}
+            </div>
+          </div>
+
+           <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Maximum No. of Days for Booking</label>
+            <div class="col-sm-7">{{detail.dest_book_limit_day}}
+            </div>
+          </div>
+
+           <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Allowed maximum No. of Pax per day</label>
+            <div class="col-sm-7">{{detail.dest_max_pax}}
+            </div>
+          </div>
+
+           <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Destination type</label>
+            <div class="col-sm-7" *ngIf="detail.dest_type == 1">Non-Administrative </div>
+            <div class="col-sm-7" *ngIf="detail.dest_type == 2">Administrative</div>
+          </div>
+
+          <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Destination Parent</label>
+            <div class="col-sm-7">{{detail.parentname}}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Terms shows in Ticket</label>
+            <div class="col-sm-7" *ngIf="detail.dest_display_terms_ticket == 1">Not </div>
+            <div class="col-sm-7" *ngIf="detail.dest_display_terms_ticket == 2">Allowed</div>
+          </div>
+
+          <div class="form-group row">
+            <label for="name" class="label col-sm-5 col-form-label">Payment Mode</label>
+            <div class="col-sm-7" *ngIf="detail.dest_paymode == 1">Cash </div>
+            <div class="col-sm-7" *ngIf="detail.dest_paymode == 2">UPI</div>
+            <div class="col-sm-7" *ngIf="detail.dest_paymode == 3">POS</div>
+          </div>
+
+    		<div class="form-group">
+               <button class="cancel" nbButton status="basic" class='right'  (click)="dismiss()" >Close</button>
+            </div> 
+
+  </nb-card-body>
+    
+</nb-card>

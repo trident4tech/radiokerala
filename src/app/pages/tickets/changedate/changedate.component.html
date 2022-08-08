@@ -1,0 +1,32 @@
+<nb-card>  
+  <nb-card-header>Change Ticket Date<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+      <form  #form="ngForm" (ngSubmit)="doCancel(form)">
+        <div class="form-group row" >
+            <label for="name" class="label col-sm-4 col-form-label"> Ticket No.</label>
+            <div class="col-sm-8">{{ticket}}
+            </div>
+          </div>
+          <div class="form-group row" >
+            <label for="name" class="label col-sm-4 col-form-label"> Ticket Date</label>
+            <div class="col-sm-8">{{ticketdate| date: 'dd/MM/yyyy'}}
+            </div>
+          </div>
+           <div class="form-group row" >
+            <label for="name" class="label col-sm-4 col-form-label"> New Date</label>
+            <div class="col-sm-8">
+                <input readonly="" required class='icon_mandatory' [nbDatepicker]="datepicker" nbInput fullWidth placeholder="Select the new date"
+                  name="bookeddate" #bookeddate ngModel  [status]="errorResponseArray['bookeddate']!==''?'danger':'basic'"  placeholder="Enter the new date">
+                <nb-datepicker #datepicker format="dd\MM\yyyy"></nb-datepicker>
+               <span *ngIf="errorResponseArray['bookeddate']"><font class='error'>{{errorResponseArray['bookeddate']}}</font></span>
+            </div>
+          </div>
+    <div class="form-group">
+               <button class="cancel" nbButton status="basic" (click)="dismiss()" >Close</button>
+     <button nbButton status="primary" class='right' type = "submit">Proceed</button>
+               
+            </div> </form>
+
+  </nb-card-body>
+    
+</nb-card>

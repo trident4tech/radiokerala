@@ -1,0 +1,80 @@
+<nb-card>
+    <nb-card-header>
+        <span class="float-left">
+            <h6>Danger Alert Management</h6>
+        </span>
+        <span class="float-right">
+            &nbsp;<button nbButton status="success" (click)="add()">Add</button>
+        </span>
+
+
+    </nb-card-header>
+    <nb-card-body>
+
+        <nb-accordion>
+            <nb-accordion-item #item>
+                <nb-accordion-item-body>
+                    <h6>Filter</h6>
+                    <div class="row mt-3">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <div class="form-group">
+                                <input [(ngModel)]="searchTerm" type="text" nbInput fullWidth
+                                    placeholder="Enter the Ticket No:" name="searchTerm">
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ">
+                            <button nbButton status="primary" name="searchTerm">Submit</button>
+                        </div>
+                    </div>
+                </nb-accordion-item-body>
+            </nb-accordion-item>
+        </nb-accordion>
+        <br />
+        <div class="row ">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>View</th>
+                            <th>Edit</th>
+                            <th>Destination</th>
+                            <th>Description</th>
+                            <th>Latitude</th>
+                            <th>Longtitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr *ngFor="let item of config.itemdata;let i=index;">
+                            <td> {{(((config.currentpageno-1)*config.itemsPerPage)+(i+1))}}</td>
+                            <td><i class="fa fa-eye" (click)="openView( item.da_id , item )"> </i></td>
+                            <td><i class="fa fa-edit" (click)="openEdit( item.da_id , item )"> </i></td>
+                            <td>{{item.dest_name}}</td>
+                            <td>{{item.da_description}}</td>
+                            <td>{{item.da_lat}}</td>
+                            <td>{{item.da_lng}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+                <li [class]="config.currentpageno==1?'page-item disabled':'page-item'">
+                    <button class='page-link' (click)="config.goPageno(1,config.pageurl)" tabindex="-1">First</button>
+                </li>
+                <li class='page-item' *ngFor="let item of config.paging;let i=index;">
+                    <button [class]="config.currentpageno==(i+1)?'page-linkactive ':'page-link'"
+                        (click)="config.goPageno((i+1),config.pageurl)">{{(i+1)}}</button>
+                </li>
+                <li [class]="config.currentpageno==config.paging.length?'page-item disabled':'page-item'">
+                    <button class='page-link'
+                        (click)="config.goPageno(config.paging.length,config.pageurl)">Last</button>
+                </li>
+            </ul>
+        </nav>
+    </nb-card-body>
+</nb-card>

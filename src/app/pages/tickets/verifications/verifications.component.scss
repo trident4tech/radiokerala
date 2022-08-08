@@ -1,0 +1,14 @@
+:host zxing-scanner ::ng-deep video{
+    height: 15rem;
+    width: 100vw;
+    object-fit: contain;
+    overflow: hidden;
+    
+  }
+  
+  video {
+    height: 15rem !important;
+    margin: auto;
+  width: calc(100% - 20px);
+  max-width: 400px;
+  }

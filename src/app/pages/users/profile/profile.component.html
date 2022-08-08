@@ -1,0 +1,47 @@
+<nb-card>  
+  <nb-card-header>View Profile</nb-card-header>
+  <nb-card-body>  
+  		<div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Name</label>
+            <div class="col-sm-9">{{detail.usr_name}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Username</label>
+            <div class="col-sm-9">{{detail.usr_user_name}}
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">{{detail.email}}
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Mobile</label>
+            <div class="col-sm-9">{{detail.usr_mobile}}
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Usergroup</label>
+            <div class="col-sm-9">{{detail.ugrp_name}}
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Destination</label>
+            <div class="col-sm-9">{{detail.dest_name}}
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Role</label>
+            <div class="col-sm-9">{{detail.name}}
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="cancel" nbButton status="success" (click)="changepass()" >Reset Password</button>
+     <button nbButton status="primary" class='right' type = "submit" (click)="edit()">Edit</button>
+               
+            </div> 
+
+  </nb-card-body>
+    
+</nb-card>

@@ -1,0 +1,64 @@
+<nb-card>
+<nb-card-header>
+        <span class="float-left"><h6>Day Report with Opening & Closing Balance</h6></span>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row mt-3">
+                      <div class="col-sm-3 d-flex align-items-center">
+                        <div class="form-group">
+                            <input readonly="" [nbDatepicker]="datepicker" nbInput fullWidth placeholder="Select the Date" name="bookeddate" [(ngModel)]="bookeddate" (ngModelChange)="doSearch()">
+<nb-datepicker #datepicker format="dd\MM\yyyy" ></nb-datepicker>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 d-flex align-items-center" *ngIf="!config.isCounterStaff">
+                        <div class="form-group">
+                       <nb-select  placeholder="Select Destination" class='icon_mandatory' name="dest" #dest ngModel (selectedChange)="changeCounter($event)">
+                  <nb-option *ngFor="let item of destinations" value="{{item['destId']}}">{{item['destName']}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+                      <div class="col-sm-3 ">
+                        <button nbButton status="primary" name="searchTerm" (click)="doSearch()" >Submit</button>
+                        &nbsp;<button nbButton status="secondary" name="filterTerm" (click)="this.config.filterData('/pages/dayreportob')">Reset</button>  
+                      </div>
+                    </div>
+<div *ngIf="showData">
+     <div class="col-sm-6 ">
+                    <center>
+<div  id="print-content" style='max-width:500px;background-color:#fff;text-align: center;'>
+  <div  >
+    <table width="100%" border="0" cellspacing="0" cellpadding="3">
+  <tr>
+    <td align="center" style="font-size:5px; font-weight: bold" >&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="center" style="font-size:16px; font-weight: bold">{{appTitle}}</td>
+  </tr>
+  <tr *ngIf="config.isCounterStaff">
+    <td align="center" style="font-size:12px;">{{destPlace}}<br />
+      Ph  :{{destPh}}<br />
+      {{destWeb}}</td>
+  </tr>
+   <tr *ngIf="destName!=''">
+    <td align="center" style="font-size:12px;">{{destName}}</td>
+  </tr>
+  <tr>
+    <td align="center" style="font-size:14px; font-weight: bold">Day Report on {{bdate}}</td></tr>
+     <tr>
+    <td align="center" style="font-size:14px; ">Generated @ {{cdate}} {{ctime}}</td></tr>
+  <tr>
+    <td align="center" >
+        <table style='max-width:500px;background-color:#fff;' border="1" cellspacing="0" cellpadding="3">
+            <tr><th>Opening Balance</th><td align="right">{{bookDetails['ob']}}</td></tr>
+            <tr><th>Total Collection</th><td align="right">{{bookDetails['collection']}}</td></tr>
+            <tr><th>Bank Deposit</th><td align="right">{{bookDetails['dep']}}</td></tr>
+            <tr><th>Closing Balance</th><td align="right">{{bookDetails['cb']}}</td></tr>            
+        </table>
+    </td></tr>
+</table>
+</div>
+</div></center></div><div class="row mt-3 align-items-right">
+                      <div class="col-sm-3 ">
+                        <button nbButton status="success" name="searchTerm" (click)="doPrint()" >Print</button>
+                      </div>
+                    </div></div></nb-card-body></nb-card>

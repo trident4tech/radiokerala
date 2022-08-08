@@ -1,0 +1,570 @@
+<nb-card>
+  <nb-card-header> Conduct Survey </nb-card-header>
+  <nb-card-body>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">1.District </label>
+      <div class="col-sm-9">
+        <nb-select  class='icon_mandatory' [status]="errorResponseArray['ngDist']!==''?'danger':'basic'"
+                  [(ngModel)]="this.ngDist"  [(selected)]="this.ngDist" (selectedChange)="distelected($event)" placeholder="{{getplaceholder(this.config.district , this.ngDist)}}">  
+                  <nb-option  *ngFor="let item of this.config.district" value="{{item['key']}}">{{item['value']}}</nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngDist']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">2.Grama Panchayath </label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngGp']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngGp"   placeholder="{{getplaceholder(this.config.gpArray , this.ngGp)}}">
+          <nb-option *ngFor="let item of this.config.gpArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngGp']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">3.Assembly Constituency </label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngAssembly']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngAssembly"  placeholder="{{getplaceholder(this.config.assamblyArray , this.ngAssembly)}}">
+          <nb-option *ngFor="let item of this.config.assamblyArray" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngAssembly']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">4.Scheme category </label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngScheme']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngScheme"  placeholder="{{getplaceholder(this.config.schemeCat , this.ngScheme)}}">
+          <nb-option *ngFor="let item of this.config.schemeCat" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngScheme']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">5.Scheme Name </label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngSchemeName" class='icon_mandatory'
+          [status]="errorResponseArray['ngSchemeName']!==''?'danger':'basic'" type="text" nbInput fullWidth fullWidth
+          placeholder="Scheme Name">
+        <span>
+          <font class='error'>{{errorResponseArray['ngSchemeName']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">6.List the wards covered</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngWard']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngWard" (selectedChange)="wardSelected($event)"   placeholder="{{getplaceholder(this.config.wadrArray , this.ngWard)}}">
+          <nb-option *ngFor="let item of this.config.wadrArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span *ngFor="let item of this.selectedWardArray">
+          <div *ngIf="item != null" (click)="removeFromWardArray( item )">{{item}}</div>
+        </span>
+
+        <span>
+          <font class='error'>{{errorResponseArray['ngWard']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">7A.Total No. of Households covered (SC)</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngTotalSc" class='icon_mandatory'
+          [status]="errorResponseArray['ngTotalSc']!==''?'danger':'basic'" type="number" nbInput fullWidth fullWidth
+          placeholder="SC">
+        <span>
+          <font class='error'>{{errorResponseArray['ngTotalSc']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">7B.Total No. of Households covered (ST)</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngTotalSt" class='icon_mandatory'
+          [status]="errorResponseArray['ngTotalSt']!==''?'danger':'basic'" type="number" nbInput fullWidth fullWidth
+          placeholder="ST">
+        <span>
+          <font class='error'>{{errorResponseArray['ngTotalSt']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">7C.Total No. of Households covered (General)</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngTotalGeneral" class='icon_mandatory'
+          [status]="errorResponseArray['ngTotalGeneral']!==''?'danger':'basic'" type="number" nbInput fullWidth
+          fullWidth placeholder="General">
+        <span>
+          <font class='error'>{{errorResponseArray['ngTotalGeneral']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">8.Size of scheme</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngSizeOfScheme']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngSizeOfScheme"  placeholder="{{getplaceholder(this.config.schemSizeArray , this.ngSizeOfScheme)}}">
+          <nb-option *ngFor="let item of this.config.schemSizeArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngSizeOfScheme']}}</font>
+        </span>
+      </div>
+
+
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">9.Scheme commissioning month and year</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngcommisionDate" class='icon_mandatory'
+          [status]="errorResponseArray['ngcommisionDate']!==''?'danger':'basic'" type="date" nbInput fullWidth fullWidth
+          placeholder="Select Date">
+        <span>
+          <font class='error'>{{errorResponseArray['ngcommisionDate']}}</font>
+        </span>
+      </div>
+
+
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">10.Expenditure for the scheme</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngSchemeExpenditure" class='icon_mandatory'
+          [status]="errorResponseArray['ngSchemeExpenditure']!==''?'danger':'basic'" type="number" nbInput fullWidth
+          fullWidth placeholder="Rs.">
+        <span>
+          <font class='error'>{{errorResponseArray['ngSchemeExpenditure']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">11.Scheme functionality</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngSchemeFunctionality']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngSchemeFunctionality"  placeholder="{{getplaceholder(this.config.schemFunctionalityArray , this.ngSchemeFunctionality)}}">
+          <nb-option *ngFor="let item of this.config.schemFunctionalityArray" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngSchemeFunctionality']}}</font>
+        </span>
+
+      </div>
+    </div>
+    <hr>
+    <nb-card-header> Status of WSS component functionality</nb-card-header>
+    <br>
+
+
+
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">12.Type of source</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngsourceType']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngsourceType"  placeholder="{{getplaceholder(this.config.schemFunctionalityArray , this.ngsourceType)}}">
+          <nb-option *ngFor="let item of this.config.waaArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngsourceType']}}</font>
+          <font class='primary' *ngIf="this.sourceLng != ''"><small>Location : {{this.sourceLat}},{{this.sourceLng}}</small></font>
+        </span>
+        <input type="file" capture="camera" accept="image/*" (change)="onFileSelected($event)"  (click)="getCurrentLocationSource()" class='icon_mandatory'>
+        <img src="{{this.selectedFileSourceType}}" alt="Not uploaded" height="100" width="100">
+        <span>
+          <font class='error'>{{errorResponseArray['selectedFileSourceType']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">13.Source - Water availability</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngWaterAvailability']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngWaterAvailability"  placeholder="{{getplaceholder(this.config.waterAvalabilityArray , this.ngWaterAvailability)}}">
+          <nb-option *ngFor="let item of this.config.waterAvalabilityArray" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngWaterAvailability']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">14.Source - Water quality issues</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngWaterqualityIssue']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngWaterqualityIssue"   placeholder="{{getplaceholder(this.config.waterQualityIssue , this.ngWaterqualityIssue)}}">
+          <nb-option *ngFor="let item of this.config.waterQualityIssue" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngWaterqualityIssue']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">15.Pump House</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngpumpHouse']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngpumpHouse"  placeholder="{{getplaceholder(this.config.pumpHouseArray , this.ngpumpHouse)}}">
+          <nb-option *ngFor="let item of this.config.pumpHouseArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngpumpHouse']}}</font>
+          <font class='primary' *ngIf="this.pumpLng != ''"><small>Location : {{this.pumpLat}},{{this.pumpLng}}</small></font>
+        </span>
+        <input type="file" capture="camera" accept="image/*" (change)="onFileSelectedPump($event)"  (click)="getCurrentLocationPump()"
+          class='icon_mandatory'>
+          <img src="{{this.selectedFileSourcepumpHouse}}" alt="Not uploaded" height="100" width="100">
+        <font class='error'>{{errorResponseArray['selectedFileSourcepumpHouse']}}</font>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">16.Pump Set</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngpumpSet']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngpumpSet"   placeholder="{{getplaceholder(this.config.pumpSetArray , this.ngpumpSet)}}">
+          <nb-option *ngFor="let item of this.config.pumpSetArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngpumpSet']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">17.KSEB Connection</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngKsebCon']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngKsebCon"  placeholder="{{getplaceholder(this.config.ksebCon , this.ngKsebCon)}}">
+          <nb-option *ngFor="let item of this.config.ksebCon" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngKsebCon']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">18.Panel board status</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngPanelBoardStatus']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngPanelBoardStatus"  placeholder="{{getplaceholder(this.config.panalBoardArray , this.ngPanelBoardStatus)}}">
+          <nb-option *ngFor="let item of this.config.panalBoardArray" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngPanelBoardStatus']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">19.Pumping Main</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngPumpingMain']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngPumpingMain"  placeholder="{{getplaceholder(this.config.pumpingMain , this.ngPumpingMain)}}">
+          <nb-option *ngFor="let item of this.config.pumpingMain" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngPumpingMain']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">20.Distribution System</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngDistributionSystem']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngDistributionSystem"  placeholder="{{getplaceholder(this.config.distributionSystem , this.ngDistributionSystem)}}">
+          <nb-option *ngFor="let item of this.config.distributionSystem" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngDistributionSystem']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">21.Type of storage tank with capacity</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngtypeOfStorageCapacity']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngtypeOfStorageCapacity"  placeholder="{{getplaceholder(this.config.typOfStorageCapacity , this.ngtypeOfStorageCapacity)}}">
+          <nb-option *ngFor="let item of this.config.typOfStorageCapacity" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngtypeOfStorageCapacity']}}</font>
+          <font class='primary' *ngIf="this.sourceLng != ''"><small>Location : {{this.sourceLat}},{{this.sourceLng}}</small></font>
+        </span>
+        <input type="file" capture="camera" accept="image/*" (change)="onFileSelectedCapacity($event)"  (click)="getCurrentLocationSource()"
+          class='icon_mandatory'>
+          <img src="{{this.selectedFileSourceStorageCapacity}}" alt="Not uploaded" height="100" width="100">
+        <font class='error'>{{errorResponseArray['ngtypeOfStorageCapacity']}}</font>
+      </div>
+    </div>
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">22.Storage Tank</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngStorageTank']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngStorageTank"  placeholder="{{getplaceholder(this.config.storageTank , this.ngStorageTank)}}">
+          <nb-option *ngFor="let item of this.config.storageTank" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngStorageTank']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">23.Disinfection Unit</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngDisInfectionUnit']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngDisInfectionUnit"  placeholder="{{getplaceholder(this.config.disInfectionUnit , this.ngDisInfectionUnit)}}">
+          <nb-option *ngFor="let item of this.config.disInfectionUnit" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngDisInfectionUnit']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">24.Water Meter</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngWaterMeter']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngWaterMeter" placeholder="{{getplaceholder(this.config.waterMeterArray , this.ngWaterMeter)}}">
+          <nb-option *ngFor="let item of this.config.waterMeterArray" value="{{item['key']}}">
+            {{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngWaterMeter']}}</font>
+        </span>
+      </div>
+    </div>
+
+    <hr>
+    <nb-card-header> Scheme O&M management</nb-card-header>
+    <br>
+
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">25.Average monthly income of the BG</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngAverageMonthlyIncome" class='icon_mandatory'
+          [status]="errorResponseArray['ngAverageMonthlyIncome']!==''?'danger':'basic'" type="number" nbInput fullWidth
+          fullWidth placeholder="Rs.">
+        <span>
+          <font class='error'>{{errorResponseArray['ngAverageMonthlyIncome']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">26.Average monthly expense of the BG</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngAverageMonthlyIncomeExpenceBg" class='icon_mandatory'
+          [status]="errorResponseArray['ngAverageMonthlyIncomeExpenceBg']!==''?'danger':'basic'" type="number" nbInput
+          fullWidth fullWidth placeholder="Rs.">
+        <span>
+          <font class='error'>{{errorResponseArray['ngAverageMonthlyIncomeExpenceBg']}}</font>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">27.Surplus fund available with the BG at
+        present</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngSurplusFound" class='icon_mandatory'
+          [status]="errorResponseArray['ngSurplusFound']!==''?'danger':'basic'" type="number" nbInput fullWidth
+          fullWidth placeholder="Rs.">
+        <span>
+          <font class='error'>{{errorResponseArray['ngSurplusFound']}}</font>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">28.BG Registration is active</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngBgRegIsActive']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngBgRegIsActive"   placeholder="{{getplaceholder(this.config.yesNoArray , this.ngBgRegIsActive)}}">
+          <nb-option *ngFor="let item of this.config.yesNoArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngBgRegIsActive']}}</font>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">29.Annual BG meeting conducted</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngAnnualBgIsconducted']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngAnnualBgIsconducted"   placeholder="{{getplaceholder(this.config.yesNoArray , this.ngAnnualBgIsconducted)}}">
+          <nb-option *ngFor="let item of this.config.yesNoArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngAnnualBgIsconducted']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">30.BG contact phone number person 1</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngBgContactOne" class='icon_mandatory'
+          [status]="errorResponseArray['ngBgContactOne']!==''?'danger':'basic'" type="number" nbInput fullWidth
+          fullWidth placeholder="Mobile Nunber">
+        <span>
+          <font class='error'>{{errorResponseArray['ngBgContactOne']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">31.BG contact phone number person 2</label>
+      <div class="col-sm-9">
+        <input [(ngModel)]="this.ngBgContacttwo" class='icon_mandatory'
+          [status]="errorResponseArray['ngBgContacttwo']!==''?'danger':'basic'" type="number" nbInput fullWidth
+          fullWidth placeholder="Mobile Nunber">
+        <span>
+          <font class='error'>{{errorResponseArray['ngBgContacttwo']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">32.Whether rejuvination of the scheme is needed by
+        the GP</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory' [status]="errorResponseArray['ngrejvinationNeeded']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngrejvinationNeeded"  placeholder="{{getplaceholder(this.config.yesNoArray , this.ngrejvinationNeeded)}}">
+          <nb-option *ngFor="let item of this.config.yesNoArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngrejvinationNeeded']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group row" *ngIf="this.ngrejvinationNeeded == 1">
+      <label for="name" class="label col-sm-3 col-form-label">33.If "No" reason</label>
+      <div class="col-sm-9">
+        <nb-select class='icon_mandatory'
+          [status]="errorResponseArray['ngrejvinationNeededReson']!==''?'danger':'basic'"
+          [(ngModel)]="this.ngrejvinationNeededReson"  placeholder="{{getplaceholder(this.config.rejReasonArray , this.ngrejvinationNeededReson)}}">
+          <nb-option *ngFor="let item of this.config.rejReasonArray" value="{{item['key']}}">{{item['value']}}
+          </nb-option>
+        </nb-select>
+        <span>
+          <font class='error'>{{errorResponseArray['ngrejvinationNeededReson']}}</font>
+        </span>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <button mat-mini-fab class='center' nbButton status="danger" (click)="doclearForm()">clear</button>&nbsp;
+      <button mat-mini-fab nbButton status="default" class='left' (click)="SaveDraft()">Draft</button>&nbsp;
+      <button mat-mini-fab nbButton status="primary" class='right' (click)="doSubmit()">Submit</button>
+
+    </div>
+  </nb-card-body>
+</nb-card>

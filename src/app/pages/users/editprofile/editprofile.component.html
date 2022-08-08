@@ -1,0 +1,31 @@
+<nb-card>  
+  <nb-card-header>Edit Profile<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+      <form  #form="ngForm" (ngSubmit)="doUserUpdate(form)">
+  		<div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Name</label>
+            <div class="col-sm-9">
+              <input class='icon_mandatory' ngModel name="name" required type="text" nbInput fullWidth  #name [status]="errorResponseArray['name']!==''?'danger':'basic'"  placeholder="Enter the Name" [ngModel]="detail.usr_name"><span *ngIf="errorResponseArray['name']"><font class='error'>{{errorResponseArray['name']}}</font></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mobile" class="label col-sm-3 col-form-label">Mobile</label>
+            <div class="col-sm-9">
+              <input  class='icon_mandatory' type="number" ngModel name="mobile" nbInput fullWidth  #mobile placeholder="Enter the Mobile"[status]="errorResponseArray['mobile']!==''?'danger':'basic'" [ngModel]="detail.usr_mobile" ><span *ngIf="errorResponseArray['mobile']"><font class='error'>{{errorResponseArray['mobile']}}</font></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+              <input  type="email" [status]="errorResponseArray['email']!==''?'danger':'basic'" ngModel name="email" nbInput fullWidth  #email placeholder="Enter the Email" [ngModel]="detail.email"><span *ngIf="errorResponseArray['email']"><font class='error'>{{errorResponseArray['email']}}</font></span>
+            </div>
+          </div>
+    <div class="form-group">
+               <button class="cancel" nbButton status="basic" (click)="dismiss()" >Close</button>
+     <button nbButton status="primary" class='right' type = "submit">Submit</button>
+               
+            </div> </form>
+
+  </nb-card-body>
+    
+</nb-card>

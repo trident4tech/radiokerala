@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+@import "~leaflet/dist/leaflet.css";
+
+// themes - our custom or/and out of the box themes
+@import 'themes';
+
+// framework component themes (styles tied to theme variables)
+@import '~@nebular/theme/styles/globals';
+@import '~@nebular/auth/styles/globals';
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/grid';
+
+// loading progress bar theme
+@import './pace.theme';
+
+@import './layout';
+@import './overrides';
+
+// install the framework and custom global styles
+@include nb-install() {
+
+  // framework global styles
+  @include nb-theme-global();
+  @include nb-auth-global();
+
+  @include ngx-layout();
+  // loading progress bar
+  @include ngx-pace-theme();
+
+  @include nb-overrides();
+};
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.icon_mandatory {
+    background: url(../../../assets/images/mandatory.gif);
+    background-position: right;
+    display: block;
+    margin-right: 5px;
+    background-repeat: no-repeat;
+    padding-right: 15px;
+}
+.error {
+  color:#f00;
+  font-size:0.8em;
+}
+
+
+
+a:link {
+  text-decoration: none;
+}
+.right {
+  text-align:right;
+  align : right;
+  float:right;
+}
+.flag-enable {
+    background-image: url(../../../assets/images/flag-green-light.jpg);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left:5px;
+}
+.flag-disable {
+    background-image: url(../../../assets/images/flag-orange.jpg);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left:5px;
+}
+.table td {
+    padding :0.50rem; 
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+}
+nb-card-header {
+  text-transform : capitalize;
+}
+.strike {
+   text-decoration: line-through;
+}
+.menu-title {
+  text-align : left;
+}
+.nb-theme-default nb-select {
+  min-width:100% !important;
+}
+

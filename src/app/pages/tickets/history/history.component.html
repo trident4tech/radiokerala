@@ -1,0 +1,281 @@
+<nb-card>
+  <nb-card-header>
+    <span class="float-left">
+      <h6>Ticket History</h6>
+    </span> <span class="float-right"><button nbButton status="secondary" (click)="toggle()"><i
+          class="fa fa-filter"></i></button></span>
+
+
+  </nb-card-header>
+  <nb-card-body>
+
+    <nb-accordion>
+      <nb-accordion-item #item>
+        <nb-accordion-item-body>
+          <h6>Filter</h6>
+          <div class="row mt-3">
+            <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <input [(ngModel)]="searchTerm" type="text" nbInput fullWidth placeholder="Enter the Ticket No:"
+                  name="searchTerm" (ngModelChange)="doSearch()">
+              </div>
+            </div>
+            <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <input readonly="" [nbDatepicker]="datepicker" nbInput fullWidth placeholder="Select the Date"
+                  name="bookeddate" [(ngModel)]="bookeddate" (ngModelChange)="doSearch()">
+                <nb-datepicker #datepicker format="dd\MM\yyyy"></nb-datepicker>
+              </div>
+            </div>
+            <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <nb-select placeholder="Select Counter Mode" class='icon_mandatory' name="mode" #mode ngModel
+                  (selectedChange)="changeMode($event)">
+                  <nb-option *ngFor="let item of modes" value="{{item['modeid']}}">{{item['modename']}}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+             <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <nb-select placeholder="Select Payment Mode" class='icon_mandatory' name="pmode" #mode ngModel
+                  (selectedChange)="changePMode($event)">
+                  <nb-option *ngFor="let item of pmodes" value="{{item['modeid']}}">{{item['modename']}}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+             <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <nb-select placeholder="Select Destination" class='icon_mandatory' name="dest" #dest ngModel
+                  (selectedChange)="changeDest($event)">
+                  <nb-option *ngFor="let item of destinations" value="{{item['dest_id']}}">{{item['dest_name']}}
+                  </nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <nb-select placeholder="Select Counter" class='icon_mandatory' name="counter" #counter ngModel
+                  (selectedChange)="changeCounter($event)">
+                  <nb-option *ngFor="let item of counters" value="{{item['counterId']}}">{{item['counterName']}}
+                  </nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-sm-3 ">
+              <button nbButton status="primary" name="searchTerm" (click)="doSearch()">Submit</button>
+              
+              &nbsp;<button nbButton status="secondary" name="filterTerm" (click)="this.config.filterData('/pages/history')">Reset</button>  
+
+            </div>
+          </div>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+    <br />
+    <div class="row ">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th width="20%">Action</th>
+              <th>Date</th>
+              <th>Ticket No.</th>
+              <th>Category</th>
+              <th>Rate</th>
+              <th>Counter</th>
+              <th>Payment Mode</th>
+              <th>Verified/Not</th>
+              <th>Paid/Not</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of config.itemdata;let i=index;">
+              <td> {{(((config.currentpageno-1)*config.itemsPerPage)+(i+1))}}</td>
+              <td><button nbButton (click)="doPrint(item['tp_number'],item['tp_classdata'])"
+                  *ngIf="config.checkAccess('pages/tickets/print')">
+                  <i class="fa fa-print"></i> </button>&nbsp;&nbsp;  
+                <button nbButton (click)="docancel(item['tp_id'],item['tp_actual_number'])"
+                  *ngIf="item['tp_is_cancelled']==config.OTNO && config.checkAccess('pages/tickets/cancel')">
+                  <i class="fa fa-trash"></i> </button>&nbsp;&nbsp; 
+                <button nbButton (click)="dochange(item['tp_id'],item['tp_actual_number'],item['tp_date'])" *ngIf="config.checkAccess('pages/tickets/print')">
+                  <i class="fa fa-edit"></i> </button>
+              </td>
+              <td> {{item['tp_date'] | date: 'dd/MM/yyyy'}} @ {{item['tp_time']}}</td>
+              <td> <strike *ngIf="item['tp_is_cancelled']==config.OTYES"
+                  [title]="item['tp_cancel_reason']">{{item['tp_actual_number']}}</strike><span
+                  *ngIf="item['tp_is_cancelled']==config.OTNO">{{item['tp_actual_number']}}</span></td>
+              <td [innerHTML]="item['tp_content']"></td>
+              <td> {{item['tp_rate']}}
+                <div id="print-content{{item['tp_number']}}"
+                  style='max-width:500px;background-color:#fff;display: none;'>
+
+                  <table style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%"
+                    cellspacing="0" cellpadding="3" border="0">
+                    <tbody>
+                      <tr>
+                        <td align="center"><strong>{{appTitle}}</strong></td>
+                      </tr>
+                      <tr>
+                        <td style="font-size: 10px;" align="center">{{item['dest_name']}}, {{item['dest_place']}} -
+                          {{item['dest_pincode']}}<br> Ph: {{item['dest_phone']}}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <table
+                            style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold"
+                            width="100%" cellspacing="0" cellpadding="3" border="1">
+                            <tbody>
+                              <tr style="font-size: 12px;">
+                                <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
+                                <th style=" border-bottom: solid 2px;" align="left">Qty</th>
+                                <th style=" border-bottom: solid 2px;" align="left">Price</th>
+                              </tr>
+                              <tr *ngFor="let classdata of classDetails;let j =index;">
+                                <td>{{classdata.className}}</td>
+                                <td>{{classdata.classQuantity}}</td>
+                                <td>{{classdata.classRate*classdata.classQuantity}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top: 10px;" valign="middle" align="center"><strong>Price ----- Rs.
+                            {{item['tp_rate']}}</strong></td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <hr color="#000000">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="font-size:12px;" align="center">
+                          <table width="100%" cellspacing="0" cellpadding="3" border="0">
+                            <tbody>
+                              <tr>
+                                <td width="20%" valign="top">
+                                  <qrcode [qrdata]="item['newticket']" [width]="120" [errorCorrectionLevel]="'M'"
+                                    elementType="'svg'"></qrcode>
+                                </td>
+                                <td width="80%" valign="top">
+                                  <table width="100%" cellspacing="0" cellpadding="3" border="0">
+                                    <tbody>
+                                      <tr>
+                                        <td style="font-size:11px;"><strong>{{item['tp_actual_number']}} |
+                                            {{item['tp_date']}} {{item['tp_time']}}</strong></td>
+                                      </tr>
+                                      <tr>
+                                        <td style="font-size:10px;">*This ticket is not retainable or refundable<br>
+                                          **Keep this ticket till you leave the destination</td>
+                                      </tr>
+                                      <tr *ngIf="allowTerms==config.OTYES && terms.length>0"><td>
+                                         <table><tr *ngFor="let term of terms;let i=index;" style="font-size:10px;line-height: 7px;" >
+                                          <td>{{term}}</td>
+                                         </tr></table></td>
+                                      </tr>
+                                      <tr >
+                                        <td style="font-size:10px;" class='terms'>
+                                          <table>
+                                            <tr style="font-size:10px;line-height: 7px;" >
+                                                <td [innerHTML]="item['tp_cgst_data']"> </td>
+                                            </tr>
+                                          <tr style="font-size:10px;line-height: 7px;" >
+                                                <td [innerHTML]="item['tp_sgst_data']"> </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="font-size:10px;"><i>[Duplicate]</i></td>
+                                      </tr>
+                                      <tr>
+                                        <td style="font-size:11px;">{{item['dest_website']}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="page-break-after: always" *ngIf="this.config.printfolio==this.config.OTYES"></div>
+                  <table style="font-familyc: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%"
+                    cellspacing="0" cellpadding="3" border="0" *ngIf="this.config.printfolio==this.config.OTYES">
+                    <tbody>
+                      <tr>
+                        <td style="font-size:12px;" align="center"><strong>{{item['dest_name']}} -
+                            {{item['dest_place']}}</strong></td>
+                      </tr>
+                      <tr>
+                        <td style="font-size:12px;" align="center">Ticket No. {{item['tp_actual_number']}} |
+                          {{item['tp_date']}} {{item['tp_time']}}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <table
+                            style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold"
+                            width="100%" cellspacing="0" cellpadding="3" border="1">
+                            <tbody>
+                              <tr style="font-size: 12px;">
+                                <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
+                                <th style=" border-bottom: solid 2px;" align="left">Qty</th>
+                                <th style=" border-bottom: solid 2px;" align="left">Price</th>
+                              </tr>
+                              <tr *ngFor="let classdata of classDetails;let j =index;">
+                                <td>{{classdata.className}}</td>
+                                <td>{{classdata.classQuantity}}</td>
+                                <td>{{classdata.classRate*classdata.classQuantity}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="middle" align="center"><strong>Price ------- Rs.{{item['tp_rate']}}</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                </div>
+              </td>
+              <td><span *ngIf="item['tp_is_public']==config.OTYES">Public</span><span
+                  *ngIf="item['tp_is_public']==config.OTNO">{{item['counter_name']}}</span></td>
+              <td><span *ngIf="item['tp_pay_mode']==config.UPIMODE">UPI</span><span
+                  *ngIf="item['tp_pay_mode']==config.CASHMODE">Cash</span>
+                <span
+                  *ngIf="item['tp_pay_mode']==config.POSMODE">POS</span>
+                <span
+                  *ngIf="item['tp_pay_mode']==config.ONLINEMODE">Online</span></td>
+              <td><span *ngIf="item['tp_ver_status']==config.OTYES">Verified</span><span
+                  *ngIf="item['tp_ver_status']==config.OTNO">Not Verified</span></td>
+               <td><span *ngIf="item['tp_is_public']==config.OTYES && item['ticket_payment_status']==config.OTYES">Paid</span><span
+                  *ngIf="item['tp_is_public']==config.OTNO"> Paid</span>
+                <span *ngIf="item['tp_is_public']==config.OTYES && item['ticket_payment_status']==config.OTNO">Not Paid</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <nav class="mt-3">
+      <ul class="pagination justify-content-center">
+        <li [class]="config.currentpageno==1?'page-item disabled':'page-item'">
+          <button class='page-link' (click)="config.goPageno(1,config.pageurl)" tabindex="-1">First</button>
+        </li>
+        <li class='page-item' *ngFor="let item of config.paging;let i=index;"><button
+            [class]="config.currentpageno==(i+1)?'page-linkactive ':'page-link'"
+            (click)="config.goPageno((i+1),config.pageurl)">{{(i+1)}}</button></li>
+        <li [class]="config.currentpageno==config.paging.length?'page-item disabled':'page-item'">
+          <button class='page-link' (click)="config.goPageno(config.paging.length,config.pageurl)">Last</button>
+        </li>
+      </ul>
+    </nav>
+
+
+  </nb-card-body>
+</nb-card>

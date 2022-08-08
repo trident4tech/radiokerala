@@ -1,0 +1,39 @@
+<nb-card>
+    <nb-card-header>Create new GP <nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon>
+    </nb-card-header>
+    <nb-card-body>
+        <form #form="ngForm" (ngSubmit)="doClassCreate(form)">
+
+            <div class='row'>
+                <div class="form-group col-sm-12">
+                    <label for="name" class="label  col-form-label">Gp Name:</label>
+                    <input class='icon_mandatory' ngModel name="name" required type="text" nbInput fullWidth #name
+                        [status]="errorResponseArray['name']!==''?'danger':'basic'"
+                        placeholder="Enter the District Name"><span *ngIf="errorResponseArray['name']">
+                        <font class='error'>{{errorResponseArray['name']}}</font>
+                    </span>
+                </div>
+            </div>
+            <div class='row'>
+                <div class="form-group  col-sm-12">
+                    <label for="code" class="label col-form-label">District</label>
+                    <nb-select class='icon_mandatory' [status]="errorResponseArray['dist']!==''?'danger':'basic'"
+                        name="dist" #dist ngModel>
+                        <nb-option *ngFor="let item of this.district" value="{{item['key']}}">{{item['value']}}
+                        </nb-option>
+                    </nb-select>
+                    <span *ngIf="errorResponseArray['dist']">
+                        <font class='error'>{{errorResponseArray['dist']}}</font>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="cancel" nbButton status="danger" (click)="dismiss()">Close</button>
+                <button nbButton status="primary" class='right' type="submit">Submit</button>
+
+            </div>
+        </form>
+
+    </nb-card-body>
+
+</nb-card>

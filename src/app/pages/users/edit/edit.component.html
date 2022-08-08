@@ -1,0 +1,89 @@
+<nb-card>
+  <nb-card-header>Edit new User<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon>
+  </nb-card-header>
+  <nb-card-body>
+    <form #form="ngForm" (ngSubmit)="doUserCreate(form)">
+      <div class="form-group row">
+        <label for="name" class="label col-sm-3 col-form-label">Name</label>
+        <div class="col-sm-9">
+          <input class='icon_mandatory' [(ngModel)]="this.ngName" name="name" required type="text" nbInput fullWidth #name
+            [status]="errorResponseArray['name']!==''?'danger':'basic'" placeholder="Enter the Name"><span
+            *ngIf="errorResponseArray['name']">
+            <font class='error'>{{errorResponseArray['name']}}</font>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="mobile" class="label col-sm-3 col-form-label">Mobile</label>
+        <div class="col-sm-9">
+          <input class='icon_mandatory' type="number" [(ngModel)]="this.ngMobile" name="mobile" nbInput fullWidth #mobile
+            placeholder="Enter the Mobile" [status]="errorResponseArray['mobile']!==''?'danger':'basic'"><span
+            *ngIf="errorResponseArray['mobile']">
+            <font class='error'>{{errorResponseArray['mobile']}}</font>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="label col-sm-3 col-form-label">Email</label>
+        <div class="col-sm-9">
+          <input [(ngModel)]="this.ngEmail" type="email" [status]="errorResponseArray['email']!==''?'danger':'basic'"  name="email" nbInput
+            fullWidth #email placeholder="Enter the Email"><span *ngIf="errorResponseArray['email']">
+            <font class='error'>{{errorResponseArray['email']}}</font>
+          </span>
+        </div>
+      </div>
+      
+    
+      <div class="form-group row">
+        <label for="grp" class="label col-sm-3 col-form-label">Usergroup</label>
+        <div class="col-sm-9">
+          <nb-select class='icon_mandatory' #grp [status]="errorResponseArray['grp']!==''?'danger':'basic'" name="grp"
+            ngModel>
+            <nb-option *ngFor="let item of ugrps" value="{{item['id']}}">{{item['name']}}</nb-option>
+          </nb-select><span *ngIf="errorResponseArray['grp']">
+            <font class='error'>{{errorResponseArray['grp']}}</font>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="label col-sm-3 col-form-label">Role</label>
+        <div class="col-sm-9">
+          <nb-select class='icon_mandatory' #role [status]="errorResponseArray['role']!==''?'danger':'basic'"
+            name="role" ngModel>
+            <nb-option *ngFor="let item of roles" value="{{item['id']}}">{{item['name']}}</nb-option>
+          </nb-select><span *ngIf="errorResponseArray['role']">
+            <font class='error'>{{errorResponseArray['role']}}</font>
+          </span>
+        </div>
+      </div>
+      
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Username</label>
+        <div class="col-sm-9">
+          <input [(ngModel)]="this.ngUname" class='icon_mandatory' [status]="errorResponseArray['username']!==''?'danger':'basic'"
+            name="username" type="text" nbInput fullWidth #username placeholder="Enter the username"><span
+            *ngIf="errorResponseArray['username']">
+            <font class='error'>{{errorResponseArray['username']}}</font>
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password" class="label col-sm-3 col-form-label">Password</label>
+        <div class="col-sm-9">
+          <input ngModel class='icon_mandatory' [status]="errorResponseArray['password']!==''?'danger':'basic'"
+            name="pass" type="password" nbInput fullWidth #username placeholder="Enter the Password"><span
+            *ngIf="errorResponseArray['password']">
+            <font class='error'>{{errorResponseArray['password']}}</font>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="cancel" nbButton status="basic" (click)="dismiss()">Close</button>
+        <button nbButton status="primary" class='right' type="submit">Submit</button>
+
+      </div>
+    </form>
+
+  </nb-card-body>
+
+</nb-card>

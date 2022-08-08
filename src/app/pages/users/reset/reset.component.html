@@ -1,0 +1,30 @@
+<nb-card>  
+  <nb-card-header>Reset Password<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+      <form  #form="ngForm" (ngSubmit)="doResetPass(form)">
+  		<div class="form-group row">
+            <label for="name" class="label col-sm-3 col-form-label">Username</label>
+            <div class="col-sm-9">{{detail.usr_user_name}}
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="password" class="label col-sm-3 col-form-label">New Password</label>
+            <div class="col-sm-9">
+              <input ngModel  class='icon_mandatory' [status]="errorResponseArray['password']!==''?'danger':'basic'" name="pass" type="password" nbInput fullWidth  #pass placeholder="Enter the new Password"><span *ngIf="errorResponseArray['password']"><font class='error'>{{errorResponseArray['password']}}</font></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="password" class="label col-sm-3 col-form-label">Re-enter Password</label>
+            <div class="col-sm-9">
+              <input ngModel  class='icon_mandatory' [status]="errorResponseArray['repass']!==''?'danger':'basic'" name="repass" type="password" nbInput fullWidth  #repass placeholder="Enter the new Password"><span *ngIf="errorResponseArray['repass']"><font class='error'>{{errorResponseArray['repass']}}</font></span>
+            </div>
+          </div>
+    <div class="form-group">
+               <button class="cancel" nbButton status="basic" (click)="dismiss()" >Close</button>
+     <button nbButton status="primary" class='right' type = "submit">Submit</button>
+               
+            </div> </form>
+
+  </nb-card-body>
+    
+</nb-card>

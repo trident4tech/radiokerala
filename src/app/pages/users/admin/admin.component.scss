@@ -1,0 +1,51 @@
+@import '../../../@theme/styles/themes';
+
+
+table,tr {
+   width: 100%;
+   padding:15px;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+td,th {
+	border-left: 1px solid #e0e0e0;
+	padding-left: 8px !important;
+}
+@include nb-install-component() {
+  .buttons-row {
+    margin: -0.5rem;
+  }
+
+  button[nbButton] {
+    margin: 0.5rem;
+  }
+
+  .action-icon {
+    @include nb-ltr(margin-right, 0.5rem);
+    @include nb-rtl(margin-left, 0.5rem);
+  }
+
+  .actions-card {
+    height: 8rem;
+  }
+}
+nb-checkbox {
+  margin-bottom: 1rem;
+}
+
+.form-inline [fullWidth] {
+  flex: 1;
+}
+
+.form-inline > * {
+  margin: 0 1.5rem 1.5rem 0;
+}
+
+nb-card.inline-form-card nb-card-body {
+  padding-bottom: 0;
+}
+.my-custom-class .modal-wrapper {
+  background: #222;
+}

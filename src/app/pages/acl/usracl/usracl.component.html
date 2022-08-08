@@ -1,0 +1,22 @@
+  <div class="col-md-12 col-lg-12 col-xxxl-12">
+    <nb-card class="list-card" status=basic>
+      <nb-card-header><h6 style="float: left;">Configuration for user : {{this.username}}</h6><button nbButton status="secondary"  style="float: right;" (click)="back()">&lt;&lt;Back</button></nb-card-header>
+      <nb-card-body>
+        <input type="text" nbInput fullWidth  placeholder='Search' name="searchTerm" [(ngModel)]="searchTerm" (ngModelChange)="doPermissionlist()"  fullWidth >
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-12 col-lg-12 col-xxxl-12" *ngFor="let item of permissionArray"> 
+    <nb-card class="list-card">
+      <nb-card-header> {{[item['name']]}}  <span class="float-right"> <material-slide-toggle *ngIf="config.checkAccess('acl-assign')"
+    [checked]="item.status" 
+    (change)="changeStatus($event,item)" >
+</material-slide-toggle> </span></nb-card-header>
+      <nb-card-body>
+          {{item['url']}}    
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  

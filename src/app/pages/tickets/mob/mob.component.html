@@ -1,0 +1,162 @@
+<div class="row" style='padding-bottom:150px;'>
+  <div class="col-sm-6 col-6 col-md-6 col-lg-3"  *ngFor="let item of options;let i=index;">
+  <nb-card [class]="item['noticket']>0?'ticket-button-selected':'ticket-button'" (click)="addTicket(item['classno'])">
+  <nb-card-body>
+    <div class="count-container"><div class="count-box">{{item['noticket']}}</div></div>
+    <div class="ticket-button-item">{{item['className']}}</div>
+  </nb-card-body>
+</nb-card>
+</div>
+
+
+</div>
+
+<div class="summary-container" *ngIf="showSummary && totalAmount>0">
+    <p align="center"><button nbButton  (click)="resetForm()" ghost status="danger" size="large"><nb-icon icon="close-outline"></nb-icon></button>&nbsp;&nbsp;<button nbButton [status]="(paymode==config.CASH)?'info':(paymode==config.UPI)?'success':'primary'" (click)="updateMode()">{{modetxt}}</button>&nbsp;  &nbsp;<button nbButton status="success" (click)="doBooking()"  [attr.disabled]="totalAmount==0? '' : null">Print Rs.{{this.totalAmount}}</button></p>
+  
+<div class="summary-box">
+  <div class="row border-bottom" >
+       <div  class="col-sm-5 col-5 col-md-5 d-flex align-items-center p-1 it" ><strong><b><center>Item</center></b></strong></div>
+       <div   class="col-sm-2 col-2 col-md-2 d-flex align-items-center p-1 it" ><strong>Rs</strong></div>
+        <div  class="col-sm-1 col-1 col-md-1 d-flex align-items-center justify-content-end p-1 it"><strong>No</strong></div>
+         <div  class="col-sm-4 col-4 col-md-4 d-flex   align-items-center p-1 it justify-content-center" ><strong>Amt</strong></div><!-- 
+         <div class="col-sm-1 col-1 col-md-1 d-flex align-items-center justify-content-end p-1"></div> -->
+</div>
+
+  <div class="row border-bottom it" *ngFor="let item of tickets;let i =index;">      
+        <div *ngIf="item.quantity>0" class="col-sm-5 col-5 col-md-5 d-flex align-items-center p-1 it" (click)="modify(i,item.classno)">{{item.act}}</div>
+        <div  *ngIf="item.quantity>0" class="col-sm-2 col-2 col-md-2 d-flex align-items-center p-1 it" (click)="modify(i,item.classno)">{{item.rate}}</div>
+        <div  *ngIf="item.quantity>0" class="col-sm-1 col-1 col-md-1 d-flex align-items-center justify-content-end p-1 it" (click)="modify(i,item.classno)">{{item.quantity}}</div>
+        <div  *ngIf="item.quantity>0" class="col-sm-4 col-4 col-md-4 d-flex it align-items-center justify-content-end p-1" (click)="modify(i,item.classno)" >{{item.total}}<button nbButton ghost status="danger" size="tiny" (click)="delItem(i,item.classno)"><nb-icon icon="trash"></nb-icon></button></div>
+        <!-- <div  *ngIf="item.quantity>0" class="col-sm-1 col-1 col-md-1 d-flex align-items-center justify-content-end p-1" (click)="modify(i,item.classno)"></div> -->
+      </div>
+    </div>
+
+</div>
+
+  <div class="print-container" *ngIf="showSummary">
+ 
+</div>
+<div  id="print-content" style='max-width:500px;background-color:#fff;display: none;'>
+  <div  *ngFor="let data of ticketprint;let ind =index;">
+
+
+
+
+<table style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%" cellspacing="0" cellpadding="3" border="0">
+  <tbody><tr>
+    <td align="center"><strong>{{appTitle}}</strong></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10px;" align="center">{{data['destName']}}, {{data['destPlace']}} - {{data['destPin']}}<br> Ph: {{data['destPhone']}}<br/><span *ngIf="destGst!=''">GSTIN:{{destGst}}</span></td>
+  </tr>
+  <tr>
+    <td>
+    <table style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold" width="100%" cellspacing="0" cellpadding="3" border="1">
+        <tbody>
+          <tr style="font-size: 12px;">
+            <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
+            <th style=" border-bottom: solid 2px;" align="left">Qty</th>
+            <th style=" border-bottom: solid 2px;" align="left">Price</th>
+          </tr>
+          <tr *ngFor="let classdata of data['classdata'];let j =index;">
+            <td>{{classdata['className']}}</td>
+            <td>{{classdata.classQuantity}}</td>
+            <td>{{classdata.classRate*classdata.classQuantity}}</td>
+          </tr>          
+        </tbody>
+    </table></td>
+  </tr>
+  <tr>
+    <td style="padding-top: 10px;" valign="middle" align="center"><strong>Price ----- Rs. {{data['actualrate']}}</strong></td>
+  </tr>
+  <tr>
+    <td align="center"><hr color="#000000"></td>
+  </tr>
+  <tr>
+    <td style="font-size:12px;" align="center"><table width="100%" cellspacing="0" cellpadding="3" border="0">
+      <tbody>
+        <tr>
+          <td width="20%" valign="top"> <qrcode [qrdata]="data['tpNumbernew']" [width]="120" [errorCorrectionLevel]="'M'" elementType="'svg'"></qrcode>  </td>
+          <td width="80%" valign="top"><table width="100%" cellspacing="0" cellpadding="3" border="0">
+            <tbody>
+              <tr>
+                <td style="font-size:11px;"><strong>{{data['tpNumber']}} | {{data['date']}} {{data['time']}}</strong></td>
+              </tr>
+              <tr>
+                <td style="font-size:10px;">*This ticket is not retainable or refundable<br>
+**Keep this ticket till you leave the destination</td>
+              </tr>
+               <tr *ngIf="allowTerms==config.OTYES && terms.length>0"><td>
+                 <table><tr *ngFor="let term of terms;let i=index;" style="font-size:10px;line-height: 7px;" >
+                  <td>{{term}}</td>
+                 </tr></table></td>
+              </tr>
+              
+              <tr >
+                <td style="font-size:10px;" class='terms'>
+                  <table><tr *ngFor="let classdata of cgsts[ind];let j =index;" style="font-size:10px;line-height: 7px;" >
+                    <ng-template [ngIf]="cgstAmount[ind][classdata]>0">
+                        <td >CGST @ {{classdata}}% on {{cgstTotAmount[ind][classdata]}} : </td><td>{{cgstAmount[ind][classdata]}}</td>
+                    </ng-template>
+                    </tr></table>
+                    <table><tr *ngFor="let classdata of sgsts[ind];let j =index;" style="font-size:10px;line-height: 7px;" >
+                    <ng-template [ngIf]="sgstAmount[ind][classdata]>0">
+                        <td >SGST @ {{classdata}}% on {{sgstTotAmount[ind][classdata]}} : </td><td>{{sgstAmount[ind][classdata]}}</td>
+                    </ng-template>
+                    </tr></table>
+                      </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="font-size:11px;">{{data['destwebsite']}}</td>
+              </tr>
+             
+            </tbody>
+          </table></td>
+        </tr>
+      </tbody>
+    </table></td>
+  </tr>
+</tbody></table>
+<div style="page-break-after: always" *ngIf="foil==this.config.OTYES"></div>
+  <table style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%" cellspacing="0" cellpadding="3" border="0" *ngIf="foil==this.config.OTYES">
+  <tbody>
+    <tr>
+      <td style="font-size:12px;" align="center"><strong>{{data['destName']}} - {{data['destPlace']}}<br/><span *ngIf="destGst!=''">GSTIN:{{destGst}}</span></strong></td>
+    </tr>
+    <tr>
+      <td style="font-size:12px;" align="center">Ticket No. {{data['tpNumber']}} | {{data['date']}} {{data['time']}}</td>
+    </tr>
+    <tr>
+      <td>
+      <table style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold" width="100%" cellspacing="0" cellpadding="3" border="1">
+        <tbody>
+          <tr style="font-size: 12px;">
+            <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
+            <th style=" border-bottom: solid 2px;" align="left">Qty</th>
+            <th style=" border-bottom: solid 2px;" align="left">Price</th>
+          </tr>
+           <tr *ngFor="let classdata of data['classdata'];let j =index;">
+            <td>{{classdata.className}}</td>
+            <td>{{classdata.classQuantity}}</td>
+            <td>{{classdata.classRate*classdata.classQuantity}}</td>
+          </tr> 
+        </tbody>
+      </table></td>
+    </tr>
+    <tr>
+      <td valign="middle" align="center"><strong>Price ------- Rs.{{data['actualrate']}}</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+<div *ngIf="ticketprint.length!=(i+1) && ticketprint.length>1" style="page-break-before: always;"></div>
+</div></div>

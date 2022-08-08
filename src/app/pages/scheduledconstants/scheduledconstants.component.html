@@ -1,0 +1,39 @@
+<nb-card>
+    <nb-card-header>View Scheduled<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon>
+    </nb-card-header>
+    <nb-card-body>
+
+        <div class="row"  *ngIf="this.dataArray != null">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sl.No</th>
+                            <th>Effective From</th>
+                            <th>value</th>
+                            <th>Scheduled By</th>
+                            <th>Scheduled On</th>
+                            <th *ngIf="this.viewlog == false" >Action</th>
+                            <th *ngIf="this.viewlog != false" >Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of this.dataArray;let i=index;">
+                            <td>{{ i+1 }}</td>
+                            <td>  {{ item.const_affective_date | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{ item.const_value}}</td>
+                            <td>{{item.usr_name}}</td>
+                            <td>{{converDate(item.created_at)}}</td>
+                            <td *ngIf="this.viewlog == false"><i class="fa fa-trash"  (click)="deleteConstant( item.const_id ) "> </i></td>
+                            <td *ngIf="this.viewlog != false"> {{getstatus( item.const_affective_date )}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row"  *ngIf="this.dataArray == null">
+            <span>{{this.text}}</span>
+        </div>
+        
+</nb-card-body>
+</nb-card>

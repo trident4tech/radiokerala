@@ -1,0 +1,88 @@
+<nb-card>
+    <nb-card-header>Constant<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon>
+    </nb-card-header>
+    <nb-card-body>
+        <form #form="ngForm" (ngSubmit)="dosubmit(form)" *ngIf="this.constNAme == null">
+            <div class="form-group row">
+                <label for="name" class="label col-sm-3 col-form-label"> Constant Name (Cannot be edited) </label>
+                <div class="col-sm-9">
+                    <input class='icon_mandatory' ngModel name="constname" required type="text" nbInput fullWidth #name
+                        [status]="errorResponseArray['constname']!==''?'danger':'basic'"
+                        placeholder="Enter the constant name"><span *ngIf="errorResponseArray['constname']">
+                        <font class='error'>{{errorResponseArray['constname']}}</font>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="name" class="label col-sm-3 col-form-label">Value</label>
+                <div class="col-sm-9">
+                    <input class='icon_mandatory' ngModel name="value" required type="text" nbInput fullWidth #name
+                        [status]="errorResponseArray['value']!==''?'danger':'basic'" placeholder="Enter the value"><span
+                        *ngIf="errorResponseArray['value']">
+                        <font class='error'>{{errorResponseArray['value']}}</font>
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label for="name" class="label col-sm-3 col-form-label">Description</label>
+                <div class="col-sm-9">
+                    <input class='icon_mandatory' ngModel name="description" required type="text" nbInput fullWidth
+                        #name [status]="errorResponseArray['description']!==''?'danger':'basic'"
+                        placeholder="Enter the Description"><span *ngIf="errorResponseArray['description']">
+                        <font class='error'>{{errorResponseArray['description']}}</font>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="cancel" nbButton status="basic" (click)="dismiss()">Close</button>
+                <button nbButton status="primary" class='right' type="submit">Submit</button>
+
+            </div>
+        </form>
+
+        <div *ngIf="this.constNAme != null">
+            <div class="form-group row">
+                <label for="name" class="label col-sm-3 col-form-label"> Constant Name (Cannot be edited) </label>
+                <div class="col-sm-9">
+                    {{ this.constNAme}}
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="name" class="label col-sm-3 col-form-label"> Constant Description </label>
+                <div class="col-sm-9">
+                    {{ this.conatsntDescription}}
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label for="name" class="label col-sm-3 col-form-label">Constant Value</label>
+                <div class="col-sm-9">
+                    <input class='icon_mandatory' [(ngModel)]="this.constantValue" value="{{this.constantValue}}"
+                        required type="text" nbInput fullWidth placeholder="Enter the Value">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="name" class="label col-sm-3 col-form-label">Effective From</label>
+                <div class="col-sm-9">
+                <input readonly="" [nbDatepicker]="datepicker" nbInput fullWidth placeholder="Select the Date"
+                    name="bookeddate" [(ngModel)]="bookeddate">
+                <nb-datepicker #datepicker format="dd\MM\yyyy"></nb-datepicker>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="cancel" nbButton status="basic" (click)="dismiss()">Close</button>
+                <button nbButton status="primary" class='right' (click)="editConstant()">Submit</button>
+
+            </div>
+            
+        </div>
+    </nb-card-body>
+
+</nb-card>

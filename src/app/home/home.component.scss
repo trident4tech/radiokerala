@@ -1,0 +1,61 @@
+
+
+:host {
+  $auth-layout-padding: 2.5rem;
+
+  nb-card {
+    margin: 0;
+    height: calc(100vh - 2 * #{$auth-layout-padding});
+    
+  }
+
+  .navigation .link {
+    display: inline-block;
+    text-decoration: none;
+
+    nb-icon {
+      font-size: 2rem;
+      vertical-align: middle;
+    }
+  }
+
+  .links nb-icon {
+    font-size: 2.5rem;
+  }
+
+  nb-card-body {
+    display: flex;
+    width: 100%;
+  }
+
+  nb-auth-block {
+    margin: auto;
+  }
+
+.card  {
+    margin-top: 10%;
+}
+
+
+}
+.icon_mandatory {
+    background: url(../../assets/images/mandatory.gif);
+    background-position: right;
+    display: block;
+    margin-right: 5px;
+    background-repeat: no-repeat;
+    padding-right: 15px;
+}
+.error {
+  color:#f00;
+  font-size:0.8em;
+}
+nb-alert {
+  background-color:#f00;
+  border-radius:5px;
+  height:40px;
+  padding:8px;
+  margin:20px;
+  color:#FFF;
+  font-weight:bold;
+}

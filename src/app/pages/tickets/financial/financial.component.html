@@ -1,0 +1,151 @@
+<nb-card>
+<nb-card-header>
+        <span class="float-left"><h6>Financial Report</h6></span>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row mt-3">
+                      <div class="col-sm-3 d-flex align-items-center">
+                        <div class="form-group">
+                            <input readonly="" [nbDatepicker]="datepicker" nbInput fullWidth placeholder="Select the Date" name="bookeddate" [(ngModel)]="bookeddate" (ngModelChange)="doSearch()">
+<nb-datepicker #datepicker format="dd\MM\yyyy" ></nb-datepicker>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 d-flex align-items-center" *ngIf="!config.isCounterStaff">
+                        <div class="form-group">
+                       <nb-select  placeholder="Select Destination" class='icon_mandatory' name="dest" #dest ngModel (selectedChange)="changeCounter($event)">
+                  <nb-option *ngFor="let item of destinations" value="{{item['destId']}}">{{item['destName']}}</nb-option>
+        </nb-select></div></div>
+        <div class="col-sm-3 d-flex ">
+                        <div class="form-group">
+                            <nb-select  placeholder="-----Select User----" class='icon_mandatory' name="user" #user ngModel (selectedChange)="changeUser($event)">
+                  <nb-option *ngFor="let item of users" value="{{item['usrId']}}">{{item['usrName']}}</nb-option>
+        </nb-select>
+                        </div>
+                      </div>
+     
+                      <div class="col-sm-3 ">
+                        <button nbButton status="primary" name="searchTerm" (click)="doSearch()" >Submit</button>
+                        &nbsp;<button nbButton status="secondary" name="filterTerm" (click)="this.config.filterData('/pages/dayreport')">Reset</button>  
+                      </div>
+                    </div>
+<div >
+     <div class="col-sm-6 ">
+                   
+<div  id="print-content" style='max-width:500px;background-color:#fff;text-align: center;'>
+  <div  > 
+    <table width="100%" border="0" cellspacing="0" cellpadding="3">
+  <tr>
+    <td align="center" style="font-size:5px; font-weight: bold" >&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="center" style="font-size:16px; font-weight: bold">{{appTitle}}</td>
+  </tr>
+  <tr *ngIf="config.isCounterStaff">
+    <td align="center" style="font-size:12px;">{{destPlace}}<br />
+      Ph  :{{destPh}}<br />
+      {{destWeb}}</td>
+  </tr>
+   <tr *ngIf="!config.isCounterStaff && destName!=''">
+    <td align="center" style="font-size:12px;">{{destName}}</td>
+  </tr>
+  <tr>
+    <td align="center" style="font-size:14px; font-weight: bold">Financial Day Report on {{bdate}}</td></tr>
+  <tr>
+    <tr>
+    <td align="center" style="font-size:14px;">Generated @ {{cdate}} {{ctime}}</td></tr>
+   <tr *ngIf="usrName!=''">
+    <td align="center" style="font-size:12px;">User : 
+      {{usrName}}</td>
+  </tr>
+  <tr *ngIf="isConnected">
+    <td align="center" >
+        <table style='width:100%;background-color:#fff;' border="1" cellspacing="0" cellpadding="3"  *ngFor="let classdatas of bookDetails['destinations'];let i =index;" >
+          <tr><th colspan=4 align="center" style='height:40px;'><center>{{classdatas}}</center></th></tr>
+            <tr><th>Name</th>
+                <th>Unit</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+            <tr *ngFor="let classdata of bookDetails['data'][i];let j =index;"><td>{{classdata['name']}}</td>
+                <td align="right">{{classdata['no']}}</td>
+                <td align="right">{{classdata['rate']}}</td>
+                <td align="right">{{classdata['amount']}}</td>
+            </tr>
+            <tr><th>Total</th>
+                <td align="right"><strong>{{bookDetails['No.of Tickets'][i]}}</strong></td>
+                <td align="right"><strong>-</strong></td>
+                 <td align="right"><strong>{{bookDetails['Total Amount'][i]}}</strong></td>
+            </tr>
+             <tr><th colspan="3">Total Amount (Cash)</th>
+                <td align="right"><strong>{{bookDetails['cash'][i]}}</strong></td>
+            </tr>
+             <tr><th colspan="3">Total Amount (UPI)</th>
+                <td align="right"><strong>{{bookDetails['upi'][i]}}</strong></td>
+            </tr>
+             <tr ><th colspan="3">Total Amount (POS)</th>
+                <td align="right"><strong>{{bookDetails['pos'][i]}}</strong></td>
+            </tr>
+            <tr *ngIf="bookDetails['Total Amount Cancel'][i]>0"><td colspan="4" align="center"><strong>Cancellation Summary</strong></td></tr>
+            <tr *ngFor="let classdata of bookDetails['canceldata'][i];let j =index;"><td>{{classdata['name']}}</td>
+                <td align="right">{{classdata['no']}}</td>
+                <td align="right">{{classdata['rate']}}</td>
+                <td align="right">{{classdata['amount']}}</td>
+            </tr>
+            <tr *ngIf="bookDetails['Total Amount Cancel'][i]>0"><th>Total</th>
+                <td align="right"><strong>{{bookDetails['No.of Tickets Cancel'][i]}}</strong></td>
+               <td align="right"><strong>-</strong></td>
+                 <td align="right"><strong>{{bookDetails['Total Amount Cancel'][i]}}</strong></td>
+            </tr>
+        </table>
+    </td></tr>
+     <tr *ngIf="!isConnected">
+    <td align="center" >
+        <table style='width:100%;background-color:#fff;' border="1" cellspacing="0" cellpadding="3"   >
+            <tr><th>Name</th>
+                <th>Unit</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+            <tr *ngFor="let classdata of result;let j =index;">
+              <ng-template [ngIf]="classdata.classamount>0">
+                <td>{{classdata.classname}}</td>
+                <td align="right">{{classdata.classunit}}</td>
+                <td align="right">{{classdata.classrate}}</td>
+                <td align="right">{{classdata.classamount}}</td>
+              </ng-template>
+            </tr>
+            <tr><th>Total</th>
+                <td align="right"><strong>{{bookDetails.totticket}}</strong></td>
+                <td align="right"><strong>-</strong></td>
+                 <td align="right"><strong>{{bookDetails.total}}</strong></td>
+            </tr>
+             <tr><th colspan="3">Total Amount (Cash)</th>
+                <td align="right"><strong>{{bookDetails.cash}}</strong></td>
+            </tr>
+             <tr><th colspan="3">Total Amount (UPI)</th>
+                <td align="right"><strong>{{bookDetails.upi}}</strong></td>
+            </tr>
+             <tr><th colspan="3">Total Amount (POS)</th>
+                <td align="right"><strong>{{bookDetails.pos}}</strong></td>
+            </tr>
+            <tr *ngFor="let classdata of canceldata;let j =index;"><ng-template [ngIf]="classdata.classamount>0">
+                <td>{{classdata.classname}}</td>
+                <td align="right">{{classdata.classunit}}</td>
+                <td align="right">{{classdata.classrate}}</td>
+                <td align="right">{{classdata.classamount}}</td>
+              </ng-template>
+            </tr>
+            <tr *ngIf="bookDetails.cantotal>0"><th>Cancellation Summary</th>
+            </tr>
+            <tr *ngIf="bookDetails.cantotal>0"><th>Total</th>
+                <td align="right"><strong>{{bookDetails.canticket}}</strong></td>
+                <td align="right"><strong>-</strong></td>
+                 <td align="right"><strong>{{bookDetails.cantotal}}</strong></td>
+            </tr>
+        </table>
+    </td></tr>
+   </table></div></div></div><div class="row mt-3 align-items-right">
+                      <div class="col-sm-3 ">
+                        <button nbButton status="success" name="searchTerm" (click)="doPrint()" >Print</button>
+                      </div>
+                    </div></div></nb-card-body></nb-card>

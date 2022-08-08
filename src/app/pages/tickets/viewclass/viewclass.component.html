@@ -1,0 +1,41 @@
+<nb-card>
+  <nb-card-header>View Survey<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">District</label>
+      <div class="col-sm-9">  {{getplaceholder(this.config.district , this.dataArray['ngDist'])}}  
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">GP</label>
+      <div class="col-sm-9">{{getplaceholder(this.config.gpArray , this.dataArray['ngGp'])}}
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">Assembly Constituency</label>
+      <div class="col-sm-9">{{getplaceholder(this.config.assamblyArray , this.dataArray['ngAssembly'])}}
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">Scheme Category</label>
+      <div class="col-sm-9">{{getplaceholder(this.config.schemeCat , this.dataArray['ngScheme'])}}
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="label col-sm-3 col-form-label">Scheme Name</label>
+      <div class="col-sm-9">{{this.dataArray['ngSchemeName']}}
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="cancel" nbButton status="basic" class='right' (click)="dismiss()">Close</button>
+
+    </div>
+
+  </nb-card-body>
+
+</nb-card>

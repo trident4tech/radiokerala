@@ -1,0 +1,114 @@
+<div class="row">
+
+  <div class="col-md-12 col-lg-4" *ngFor="let item of counters">
+
+    
+    <!-- <nb-card status="success" *ngIf="item.counterStatus && item.counterUser==userId">
+      <nb-card-header class="counter-header">{{item.counterName}} <nb-icon icon="unlock" ></nb-icon></nb-card-header>
+      <nb-card-body>
+        <p align="center" class="text-primary">Open - {{item.rec_optime}}</p>
+        <div class="today-details">
+      <div class="parameter">
+        <span class="caption parameter-name">Ticket Sold</span>
+        <span class="parameter-value">{{item.ticket}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Total Amount</span>
+        <span class="parameter-value"><span *ngIf="item.rec_user">Rs. {{item.cash}}/-</span></span>
+      </div>
+    </div>
+
+         <div class="today-details counter-border-top">
+      <div class="parameter">
+        <span class="caption parameter-name">CounterStaff</span>
+        <span class="parameter-value">{{item.rec_user}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Opening Time</span>
+        <span class="parameter-value">{{item.rec_optime}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Closing Time</span>
+        <span class="parameter-value">{{item.rec_cltime}}</span>
+      </div>
+    </div>
+      </nb-card-body>
+      <nb-card-footer><button nbButton outline fullWidth status="danger" (click)="changeCounterStatus(item.counterId,config.OTNO)">Close</button>      </nb-card-footer>
+    </nb-card>
+
+
+     -->
+    <nb-card >
+      <nb-card-header class="counter-header">{{item.counterName}}<nb-icon status="danger" icon="lock" ></nb-icon></nb-card-header>
+      <nb-card-body>
+        <!-- <p align="center" class="text-primary">Last Closing - {{item.rec_cltime}}</p>
+        <div class="today-details">
+      <div class="parameter">
+        <span class="caption parameter-name">Ticket Sold</span>
+        <span class="parameter-value">{{item.ticket}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Total Amount</span>
+        <span class="parameter-value"><span *ngIf="item.rec_user">Rs. {{item.cash}}/-</span></span>
+      </div>
+    </div>
+ -->
+         <div class="today-details ">
+      <div class="parameter">
+        <span class="caption parameter-name">CounterStaff</span>
+        <span class="parameter-value">{{item.rec_user}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Opening Time</span>
+        <span class="parameter-value">{{item.rec_optime}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Closing Time</span>
+        <span class="parameter-value">{{item.rec_cltime}}</span>
+      </div>
+    </div>
+      </nb-card-body>
+      <nb-card-footer><button nbButton fullWidth outline status="primary" (click)="changeCounterStatus(item.counterId,config.OTYES)" *ngIf="!activeCounter">Open</button>    </nb-card-footer>
+    </nb-card>
+
+
+
+   <!--  
+    <nb-card status="success" *ngIf="(item.counterStatus && item.counterUser!=userId)">
+      <nb-card-header class="counter-header">{{item.counterName}} <nb-icon icon="unlock" ></nb-icon></nb-card-header>
+      <nb-card-body>
+        <p align="center" class="text-primary">Open - {{item.rec_optime}}</p>
+        <div class="today-details">
+      <div class="parameter">
+        <span class="caption parameter-name">Ticket Sold</span>
+        <span class="parameter-value">{{item.ticket}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Total Amount</span>
+        <span class="parameter-value"><span *ngIf="item.rec_user">Rs. {{item.cash}}/-</span></span>
+      </div>
+    </div>
+
+         <div class="today-details counter-border-top">
+      <div class="parameter">
+        <span class="caption parameter-name">CounterStaff</span>
+        <span class="parameter-value"> {{item.rec_user}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Opening Time</span>
+        <span class="parameter-value">{{item.rec_optime}}</span>
+      </div>
+      <div class="parameter">
+        <span class="caption parameter-name">Closing Time</span>
+        <span class="parameter-value">{{item.rec_cltime}}</span>
+      </div>
+    </div>
+      </nb-card-body>
+      <nb-card-footer><button nbButton *ngIf="item.counterStatus && item.counterUser!=userId" outline fullWidth status="danger" disabled>Close</button>  </nb-card-footer>
+    </nb-card> -->
+
+</div>
+
+
+
+</div>

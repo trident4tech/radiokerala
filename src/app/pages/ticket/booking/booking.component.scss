@@ -1,0 +1,48 @@
+.footer-toolbox {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+  display: block;
+}
+
+.footer-tool {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+ .today-details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: .2rem;
+  }
+
+  .parameter {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .parameter-name,
+  .parameter-value {
+    display: block;
+  }
+
+  .counter-border-top {
+    border-top: solid 1px #ccc;
+    padding-top: .5rem;
+    margin-top: .5rem;
+  }
+
+  .counter-status {
+  padding: 0.25rem;
+  margin: 0.25rem;
+}
+
+.counter-header {
+  text-align: center;
+}

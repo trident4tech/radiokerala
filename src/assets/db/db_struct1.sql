@@ -1,0 +1,1 @@
+CREATE TRIGGER counterupdation_trgrs AFTER INSERT ON public.ticket_print FOR EACH ROW EXECUTE FUNCTION counterupdation();

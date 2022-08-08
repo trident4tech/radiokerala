@@ -1,0 +1,131 @@
+<nb-card>  
+  <nb-card-header>Edit Destination <nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
+  <nb-card-body>  
+      <form  #form="ngForm" (ngSubmit)="doClassSave(form)">
+
+        <div class='row'>
+        <div class="form-group col-sm-4">
+            <label for="name" class="label  col-form-label">Destination Name:</label>
+              <input class='icon_mandatory' [ngModel]="detail['dest_name']" name="name" required type="text" nbInput fullWidth  #name [status]="errorResponseArray['name']!==''?'danger':'basic'"  placeholder="Enter the Destination Name"><span *ngIf="errorResponseArray['name']"><font class='error'>{{errorResponseArray['name']}}</font></span>
+          </div>
+
+          <div class="form-group  col-sm-4">
+            <label for="code" class="label col-form-label">Destination Code:</label>
+              <input class='icon_mandatory' [ngModel]="detail['dest_code']" name="code" required type="text" nbInput fullWidth  #code [status]="errorResponseArray['code']!==''?'danger':'basic'"  placeholder="Enter the Destination Code"><span *ngIf="errorResponseArray['code']"><font class='error'>{{errorResponseArray['code']}}</font></span>
+          </div>
+    
+        <div class="form-group col-sm-4">
+            <label for="booking" class="label col-form-label">Is Allowed for Booking:</label>
+           <nb-select  class='icon_mandatory'  [status]="errorResponseArray['booking']!==''?'danger':'basic'" name="booking" #booking placeholder="Select" [(selected)]="book">
+                  <nb-option value="1">Not</nb-option>
+                  <nb-option value="2">Allowed</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+          <div class='row'>         
+          <div class="form-group col-sm-4">
+            <label for="maxpax" class="label col-form-label">Allowed Maximum No. of Pax per Day:</label>
+              <input  type="text" status=basic [ngModel]="detail['dest_max_pax']" name="maxpax" nbInput fullWidth  #maxpax placeholder="Enter the maximum no of pax">
+          </div>  
+          <div class="form-group col-sm-4">
+            <label for="startday" class="label col-form-label">Booking Start Day:</label>
+              <input  type="text" status=basic [ngModel]="detail['dest_book_start_day']" name="startday" nbInput fullWidth  #startday placeholder="Enter the Booking End Time">
+          </div>
+
+          <div class="form-group col-sm-4">
+            <label for="maxbookday" class="label col-form-label">Maximum No. of Days for Booking:</label>
+              <input  type="text" status=basic [ngModel]="detail['dest_book_limit_day']" name="maxbookday" nbInput fullWidth  #maxbookday placeholder="Enter the Maximum No. of Days for Booking">
+            </div>
+          </div>
+
+          <div class='row'>
+            <div class="form-group  col-sm-4">
+            <label for="endtime" class="label col-form-label">GSTIN:</label>
+              <input  type="text" status=basic [ngModel]="detail['dest_gstin']" name="gstin" nbInput fullWidth  #gstin placeholder="Enter the GSTIN">
+            </div>
+          
+
+          <div class="form-group col-sm-4">
+            <label for="place" class="label col-form-label">Place:</label>
+              <input  class='icon_mandatory' type="text" [ngModel]="detail['dest_place']" name="place" nbInput fullWidth  #place placeholder="Enter the Place"[status]="errorResponseArray['place']!==''?'danger':'basic'" ><span *ngIf="errorResponseArray['place']"><font class='error'>{{errorResponseArray['place']}}</font></span>
+            </div>
+  
+         <div class="form-group col-sm-4">
+            <label for="pincode" class="label col-form-label">Pincode:</label>
+              <input  class='icon_mandatory' type="text" [ngModel]="detail['dest_pincode']" name="pincode" nbInput fullWidth  #pincode placeholder="Enter the Pincode"[status]="errorResponseArray['pincode']!==''?'danger':'basic'" ><span *ngIf="errorResponseArray['pincode']"><font class='error'>{{errorResponseArray['pincode']}}</font></span>
+          </div>   
+        </div>
+
+          <div class='row'>
+         <div class="form-group col-sm-4">
+            <label for="description" class="label col-form-label">Description:</label>
+              <input  class='icon_mandatory' type="text" [ngModel]="detail['dest_desc']" name="description" nbInput fullWidth  #description placeholder="Enter the Description"[status]="errorResponseArray['description']!==''?'danger':'basic'" ><span *ngIf="errorResponseArray['description']"><font class='error'>{{errorResponseArray['description']}}</font></span>
+            </div>
+         
+          <div class="form-group col-sm-4">
+            <label for="timing" class="label col-form-label">Timing:</label>
+              <input  class='icon_mandatory' type="text" [ngModel]="detail['dest_timing']" name="timing" nbInput fullWidth  #timing placeholder="Enter the Timing"[status]="errorResponseArray['timing']!==''?'danger':'basic'" ><span *ngIf="errorResponseArray['timing']"><font class='error'>{{errorResponseArray['timing']}}</font></span>
+          </div>  
+
+          <div class="form-group col-sm-4">
+            <label for="email" class="label col-form-label">Email:</label>
+              <input  class='icon_mandatory' type="text" [ngModel]="detail['dest_email']" name="email" nbInput fullWidth  #email placeholder="Enter the Email"[status]="errorResponseArray['email']!==''?'danger':'basic'" ><span *ngIf="errorResponseArray['email']"><font class='error'>{{errorResponseArray['email']}}</font></span>
+            </div>
+          </div> 
+
+          <div class='row'>
+          <div class="form-group col-sm-4">
+            <label for="website" class="label col-form-label">Website:</label>
+              <input  class='icon_mandatory' type="text" [ngModel]="detail['dest_website']" name="website" nbInput fullWidth  #website placeholder="Enter the website"[status]="errorResponseArray['website']!==''?'danger':'basic'" ><span *ngIf="errorResponseArray['website']"><font class='error'>{{errorResponseArray['website']}}</font></span>
+          </div>
+
+          <div class="form-group col-sm-4">
+            <label for="phoneno" class="label col-form-label">Phone No:</label>
+              <input  class='icon_mandatory' type="text" [ngModel]="detail['dest_phone']" name="phoneno" nbInput fullWidth  #phoneno placeholder="Enter the Phone No" [status]="errorResponseArray['phoneno']!==''?'danger':'basic'" ><span *ngIf="errorResponseArray['phoneno']"><font class='error'>{{errorResponseArray['phoneno']}}</font></span>
+            </div>
+          
+           <div class="form-group col-sm-4">
+            <label for="desttype" class="label col-form-label">Destination Type:</label>
+           <nb-select  class='icon_mandatory'  [status]="errorResponseArray['desttype']!==''?'danger':'basic'" name="desttype" #desttype placeholder="Select" [(selected)]="typedest">
+                  <nb-option value="1">Non-Administrative</nb-option>
+                  <nb-option value="2">Administrative</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+          <div class='row'>
+          <div class="form-group col-sm-4">
+            <label for="name" class="label col-form-label">Destination:</label>
+                <nb-select   name="destid" #destid placeholder="Select" [(selected)]="dest" (selectedChange)="getAttrByDest($event)">
+                  <nb-option *ngFor="let item of destinations" value="{{item['destId']}}">{{item['destName']}}</nb-option>
+                </nb-select>
+            </div>
+         
+      	 <div class="form-group col-sm-4">
+            <label for="termsticket" class="label col-form-label">Terms shows in Ticket:</label>
+           <nb-select  class='icon_mandatory'  [status]="errorResponseArray['termsticket']!==''?'danger':'basic'" name="termsticket" #termsticket placeholder="Select" [(selected)]="showterms" placeholder="Select">
+                  <nb-option value="1">Not</nb-option>
+                  <nb-option value="2">Allowed</nb-option>
+            </nb-select>
+            </div>
+
+            <div class="form-group col-sm-4">
+            <label for="paymode" class="label col-form-label">Payment Mode:</label>
+           <nb-select  class='icon_mandatory'  [status]="errorResponseArray['paymode']!==''?'danger':'basic'" name="paymode" #paymode placeholder="Select" [(selected)]="paymentmode" placeholder="Select">
+                  <nb-option value="2">UPI</nb-option>
+                  <nb-option value="3">POS</nb-option>
+            </nb-select>
+            </div>
+          </div>
+
+
+    <div class="form-group">
+               <button class="cancel" nbButton status="danger" (click)="dismiss()" >Close</button>
+     <button nbButton status="primary" class='right' type = "submit">Submit</button>
+               
+            </div> </form>
+
+  </nb-card-body>
+    
+</nb-card>

@@ -1,0 +1,30 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </a>
+    <a class="logo" href="#" (click)="navigateHome()"><img *ngIf="!this.userPictureOnly"
+        [src]=config.domSanitizer.bypassSecurityTrustResourceUrl(config.logourl) height="50px"><img
+        *ngIf="this.userPictureOnly" [src]=config.domSanitizer.bypassSecurityTrustResourceUrl(config.logo)
+        height="25px"></a>
+
+  </div>
+
+</div>
+
+<div class="header-container">
+  <!--div class="dest-container" *ngIf="router.url=='/pages/dashboard'">
+    <nb-select placeholder="Select Destination" name="dest" #dest ngModel (selectedChange)="changeDest($event)"
+      class="input-full-width size-medium status-info shape-rectangle nb-transition" [(selected)]="selectedItem">
+      <nb-option *ngFor="let item of destinations" value="{{item['dest_id']}}">{{item['dest_name']}}
+      </nb-option>
+    </nb-select>
+  </div-->
+  <nb-actions size="small">
+
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="username" [picture]="user?.picture">
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+</div>

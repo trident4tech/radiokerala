@@ -1,0 +1,10 @@
+<nb-card style='width:350px;height:200px;'>
+  <nb-card-header style='background-color:#ffc400 '>Please Confirm</nb-card-header>
+  <nb-card-body>
+  	Are you sure you want to delete?
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton status="basic" (click)="cancel()">Cancel</button>
+    <button nbButton status="danger" class='right' (click)="confirmdelete()">Proceed</button>
+  </nb-card-footer>
+</nb-card>

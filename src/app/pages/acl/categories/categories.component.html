@@ -1,0 +1,42 @@
+<div class="col-md-12 col-lg-12 col-xxxl-12">
+  <nb-card class="list-card" status=basic>
+    <nb-card-header>
+      <h6 style="float: left;">{{roleName}}</h6><button nbButton status="secondary" style="float: right;"
+        (click)="back()">&lt;&lt;Back</button>
+    </nb-card-header>
+    <nb-card-body>
+
+    </nb-card-body>
+  </nb-card>
+</div>
+<div class="col-md-12 col-lg-12 col-xxxl-12" style="background-color: lightblue;">
+  <h6>Side Menu</h6>
+  <div *ngFor="let item of permissionArray">
+    <nb-card class="list-card" *ngIf="item['details'] == 'Side Menu'">
+      <nb-card-header> {{[item['name']]}} <span class="float-right">
+          <material-slide-toggle [checked]="item.status" (change)="changeStatus($event,item)">
+          </material-slide-toggle>
+        </span></nb-card-header>
+    </nb-card>
+  </div>
+</div>
+
+
+<div class="col-md-12 col-lg-12 col-xxxl-12" style="background-color: aliceblue;">
+  <h6>Permissions</h6>
+  <div *ngFor="let item of permissionArray">
+    <nb-card class="list-card" *ngIf="item['details'] != 'Side Menu'">
+      <nb-card-header> {{[item['name']]}} <span class="float-right">
+          <material-slide-toggle [checked]="item.status" (change)="changeStatus($event,item)">
+          </material-slide-toggle>
+        </span></nb-card-header>
+      <nb-card-body>
+        <small>{{item['details']}}</small>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="col-md-12 col-lg-12 col-xxxl-12">
+
+</div>
