@@ -31,7 +31,7 @@ export class PagesComponent {
 		this.createOnline$().subscribe(isOnline => {
 			this.isOnline = isOnline
 		});
-		this.loadMenu();
+		//this.loadMenu();
 		//this.loadDataMenu();
 	}
 

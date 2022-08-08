@@ -16,11 +16,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
   //   icon: 'list-outline',
   //   link: '/pages/listdraft/qasdeirowehfkjsdfhuyeifnhsdfdiupow',
   // },
-  // {
-  //   title: 'List Survey',
-  //   icon: 'list-outline',
-  //   link: '/pages/listdraft/qasdeirowehfkjsdfhuyeifnhsdfdiupoq',
-  // },
+  {
+    title: 'Map Report',
+    icon: 'grid-outline',
+    link: '/pages/mapreport/',
+  },
   // {
   //   title: 'Access Control',
   //   icon: 'lock-outline',

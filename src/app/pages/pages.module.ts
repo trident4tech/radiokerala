@@ -122,6 +122,7 @@ import { EditComponent as assemblyEdt } from './assembly/edit/edit.component';
 import {  ListComponent as assemblyList } from './assembly/list/list.component';
 
 import { ClasslistComponent as clslist } from './tickets/classlist1/classlist.component';
+import { MapreportComponent } from './mapreport/mapreport.component';
 
 
 @NgModule({
@@ -241,6 +242,7 @@ import { ClasslistComponent as clslist } from './tickets/classlist1/classlist.co
     assemblyAdd,
     assemblyEdt,
     assemblyList,
+    MapreportComponent,
   ],
 })
 export class PagesModule {

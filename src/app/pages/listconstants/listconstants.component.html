@@ -2,11 +2,11 @@
     <nb-card-header> Conduct Survey </nb-card-header>
     <nb-card-body>
         
-         <nb-progress-bar [value]="rectime"  status="success" [displayValue]="false">{{rectime}}</nb-progress-bar><br/>
+         <nb-progress-bar [value]="rectime"  status="warning" [displayValue]="false">{{rectime}}</nb-progress-bar><br/>
 
         <div class="form-group" >
-              <button *ngIf="!recording" mat-mini-fab nbButton status="success" class='col-sm-12' (click)="initiateRecording()">Start Recording</button>
-               <button *ngIf="recording" mat-mini-fab nbButton status="success" class='col-sm-12' (click)="stopRecording()">Stop Recording</button>
+              <button *ngIf="!recording" mat-mini-fab nbButton status="primary" class='col-sm-12' (click)="initiateRecording()">Start Recording</button>
+               <button *ngIf="recording" mat-mini-fab nbButton status="danger" class='col-sm-12' (click)="stopRecording()">Stop Recording</button>
            </div>
            <div class="form-group" >
               <audio controls="" *ngIf="url!=''" class="col-sm-12">
@@ -30,7 +30,7 @@
             </div>
             </div>
             <div class="col-sm-12 row form-group" >
-             <label for="name" class="label col-sm-3 col-form-label">Signal Strength</label>
+             <label for="name" class="label col-sm-3 col-form-label">Audio Quality</label>
              <div class="col-sm-9">
                <nb-radio-group >
             <nb-radio
@@ -44,6 +44,21 @@
             <nb-radio
               [value]="'This is value 3'">
               Weak
+            </nb-radio>
+          </nb-radio-group>
+            </div>
+        </div>
+        <div class="col-sm-12 row form-group" >
+             <label for="name" class="label col-sm-3 col-form-label">Source Type</label>
+             <div class="col-sm-9">
+               <nb-radio-group >
+            <nb-radio
+              [value]="'This is value 1'">
+              Car Radio
+            </nb-radio>
+            <nb-radio
+              [value]="'This is value 2'">
+              Normal Radio
             </nb-radio>
           </nb-radio-group>
             </div>

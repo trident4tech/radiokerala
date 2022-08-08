@@ -76,12 +76,17 @@ import { EditComponent as gpedit } from './gp/edit/edit.component';
 import { AddComponent as assemblyAdd  } from './assembly/add/add.component';
 import { EditComponent as assemblyEdt } from './assembly/edit/edit.component';
 import {  ListComponent as assemblyList } from './assembly/list/list.component';
+import { MapreportComponent } from './mapreport/mapreport.component';
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [    
-    
+
+     {
+      path: 'mapreport',
+      component: MapreportComponent,
+    },
     {
       path: 'newsurvey',
       component: ListconstantsComponent,
@@ -388,7 +393,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'newsurvey',
       pathMatch: 'full',
     },
     {

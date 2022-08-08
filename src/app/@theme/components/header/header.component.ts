@@ -61,6 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {  
+    this.changeTheme('dark');
     this.cver = localStorage.getItem('cver');
     this.lver = localStorage.getItem('lver');
     this.selectedItem = localStorage.getItem('maindest');
