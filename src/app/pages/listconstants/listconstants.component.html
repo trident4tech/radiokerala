@@ -14,22 +14,38 @@
         </div>
 
         <div class="col-sm-12 row form-group" >
-             <label for="name" class="label col-sm-3 col-form-label">Name:</label>
+             <label for="name" class="label col-sm-3 col-form-label">Tester Name:</label>
              <div class="col-sm-9">
 
-                Joseph
+                  <input class='icon_mandatory'   required type="text" nbInput fullWidth  placeholder="Enter the Name">
+               
+            </div>
+            </div>
+            <div class="col-sm-12 row form-group" >
+             <label for="name" class="label col-sm-3 col-form-label">Tester Mobile:</label>
+             <div class="col-sm-9">
+
+                  <input class='icon_mandatory'   required type="text" nbInput fullWidth  placeholder="Enter the Mobile No.">
                
             </div>
             </div>
             <div class="col-sm-12 row form-group" >
              <label for="name" class="label col-sm-3 col-form-label">Signal Strength</label>
              <div class="col-sm-9">
-                  <nb-select class='icon_mandatory'  name="grp"
-            >
-            <nb-option  value="1">Good</nb-option>
-            <nb-option  value="2">Moderate</nb-option>
-            <nb-option  value="3">Weak</nb-option>
-          </nb-select>
+               <nb-radio-group >
+            <nb-radio
+              [value]="'This is value 1'">
+              Good
+            </nb-radio>
+            <nb-radio
+              [value]="'This is value 2'">
+              Moderate
+            </nb-radio>
+            <nb-radio
+              [value]="'This is value 3'">
+              Weak
+            </nb-radio>
+          </nb-radio-group>
             </div>
         </div>
         <div class="col-sm-12 row form-group" >

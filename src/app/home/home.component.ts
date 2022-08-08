@@ -33,14 +33,7 @@ export class HomeComponent implements OnInit {
     if (val != null && val != 'null') {
       this.getSettings();
       this.config.doSync();
-      let userId = this.config.doDecrypt(localStorage.getItem('userId'));
-      if (this.role == localStorage.getItem('counterstaffRole'))
-        if (window.innerWidth < 415)
-          this.router.navigateByUrl('/pages/mob');
-        else
-          this.router.navigateByUrl('/pages/newbooking');
-      else
-        this.router.navigateByUrl('/dashboard');
+      this.router.navigateByUrl('/newsurvey');
     }
   }
 
