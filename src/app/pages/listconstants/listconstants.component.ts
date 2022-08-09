@@ -24,23 +24,28 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class ListconstantsComponent implements OnInit {
-   map: Leaflet.Map;
+  map: Leaflet.Map;
+  audioblob : any;
   public marker: any = '';
   public greenIcon = Leaflet.icon({
     iconUrl: '../../../../assets/icons/marker-icon.png',
     /*shadowUrl: 'leaf-shadow.png'*/
-});
- //Lets declare Record OBJ
-record;//Will use this flag for toggeling recording
-recording = false;//URL of Blob
-rectime:number=100;
-maxrecord : number = 100;
-interval:any;
-lat : any;
-lng :any;
-url:string='';error;constructor(private domSanitizer: DomSanitizer) {}sanitize(url: string) {
-return this.domSanitizer.bypassSecurityTrustUrl(url);
-}/**
+  });
+   //Lets declare Record OBJ
+  record;//Will use this flag for toggeling recording
+  recording = false;//URL of Blob
+  rectime:number=100;
+  maxrecord : number = 100;
+  interval:any;
+  lat : any='8.5241';
+  lng :any='76.9366';
+  url:string='';
+  error;
+  gpsTrack:boolean = false;
+  constructor(public http: HttpClient,public config: ConfigService,private domSanitizer: DomSanitizer) {}
+  sanitize(url: string) {
+    return this.domSanitizer.bypassSecurityTrustUrl(url);
+  }/**
 * Start recording.
 */initiateRecording() {
   this.recording = true; 
@@ -80,31 +85,38 @@ this.record.stop(this.processRecording.bind(this));
 * processRecording Do what ever you want with blob
 * @param  {any} blob Blog
 */processRecording(blob) {
-this.url = URL.createObjectURL(blob);
-console.log("blob", blob);
-console.log("url", this.url);
-}/**
+    this.url = URL.createObjectURL(blob);
+    this.audioblob = blob;
+    console.log("blob", blob);
+    console.log("url", this.url);
+  }/**
 * Process Error.
 */errorCallback(error) {
-this.error = 'Can not play audio in your browser';
-}ngOnInit() {
-  // }
-  // function getLocation() {
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition( position => {
-    this.lat = position.coords.latitude
-    this.lng = position.coords.longitude
-    this.createMap()
-}, this.positionError, { 
+    this.error = 'Can not play audio in your browser';
+  }
+  ngOnInit() {
+    this.config.map = this.config.OTYES;
+    this.getLocation();
+   }
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: Position) => {
+        if (position) {
+          this.gpsTrack = true;
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          this.createMap();
+        }
+      },
+        (error: PositionError) => console.log(error),{ 
             enableHighAccuracy: true, 
             timeout: 15000, 
             maximumAge: 0 
         } );
-   // console.log(this.showPosition);
-  } else {
-    console.log("Geo Location not supported by browser");
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
   }
-}
  positionError( error ) { 
     
         switch ( error.code ) { 
@@ -147,5 +159,59 @@ this.error = 'Can not play audio in your browser';
     }).addTo(this.map);
     this.leafletMap();
    }
+   ngOnDestroy(): void {
+    this.map.remove();
+  }
+  dosubmit() { 
+    // this.errorResponseArray['des'] = '';
+    // this.errorResponseArray['lat'] = '';
+    // this.errorResponseArray['img'] = '';
+     let noError = true;
+
+    // if ( this.lng == null || this.lng == '' || this.lng === undefined ){
+    //   this.errorResponseArray['lat'] = 'Please select Location';
+    //   noError = false;
+    // }
+
+    // if (this.html == '') {  
+    //   this.errorResponseArray['des'] = 'Please enter the Details';
+    //   noError = false;
+    // }
+    // if ( this.lat == '') { 
+    //   this.errorResponseArray['lat'] = 'Please select the location';
+    //   noError = false;
+    // }
+         
+    //  if ( this.fileCount==0 && this.detail.length==0) { 
+    //   this.errorResponseArray['img'] = 'Please select the image';
+    //   noError = false;
+    // }
+ 
+
+    if ( noError ) {
+        let userId=this.config.doDecrypt(localStorage.getItem('userId'));
+        const formData = new FormData();
+        formData.append("file[]", this.audioblob);
+        
+          
+        this.http.post(this.config.apiUrl+'v1/hotel/addaudio',formData)
+        .subscribe(
+          (response) => {
+        console.log(response);
+           this.config.checkStatus(response['Status'],response['version']);
+            this.config.showSuccessToaster('The survey has been successfuly added ');           
+          },
+          (error)=>{
+            console.log(error);
+            this.config.showErrorToaster('The survey insertion has been failed');
+          }
+        );
+    }
+    else {
+     // console.log(this.errorResponseArray);
+      this.config.showErrorToaster(this.config.validationError);
+    }
+  }
+
 }
 

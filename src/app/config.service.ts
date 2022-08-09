@@ -150,6 +150,7 @@ export class ConfigService {
   public osAndroid: number = 3;
   public mapLat: any = "12.4996";
   public mapLng: any = "74.9869";
+  public map: number=1;
 
 
   constructor(public domSanitizer: DomSanitizer, public dialogService: NbDialogService,
@@ -163,12 +164,12 @@ export class ConfigService {
       this.apiUrl = "https://api." + this.hostname + "/";
     }
 
-    this.apiUrl = "https://jims.sandbox.webapiservices.in/api";
+   // this.apiUrl = "https://jims.sandbox.webapiservices.in/api/";
 
 
     let host = this.hostname.replace('ticketbuddy.in', "");
     document.title = host[0].toUpperCase() + host.substr(1).toLowerCase();
-    this.getSettingsData();
+    //this.getSettingsData();
   }
   //method is used to encrypt and decrypt the text  
   doEncrypt(ctext) {

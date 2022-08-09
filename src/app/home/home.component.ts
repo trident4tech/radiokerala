@@ -58,39 +58,101 @@ export class HomeComponent implements OnInit {
       this.noError = false;
     }
     if (this.noError) {
+      if (this.isOnline == true) {
+        this.http.post(this.config.apiUrl + 'v1/user/login', {
+          'usr_user_name': userName.value,
+          'password': password.value,
+        })
+          .subscribe((response) => {
+            this.successResponseArray = [];
+            this.successResponseArray.push(response);
+            this.showPrgress = false;
+            let ticketDetails = [];
+            let json = JSON.stringify(ticketDetails);
+            localStorage.setItem('ticketDetails', json);
+            
+            if (this.successResponseArray[0]['Status'] == this.config.OTYES) {
+              /**Store local storage data for offline login */
+              this.config.invalid = this.config.OTNO;
+              var username = userName.value;
+              let encryptedPassword = this.config.doEncrypt(password.value);
+              let userDataForStore = JSON.stringify(response);
+              let encryptedUserData = this.config.doEncrypt(userDataForStore);
+              localStorage.setItem(username + '-data', encryptedUserData);
+              localStorage.setItem(username + '-password', encryptedPassword);
+              /**Offline login end */
+              localStorage.setItem('users',JSON.stringify(this.successResponseArray[0]['usrData']) );
 
-      var formData: any = new FormData();
-      formData.append('username', userName.value);
-      formData.append('password', password.value);
-      formData.append('API_KEY', this.config.apiKey);
-      formData.append('service', "login");
-      this.http.post(this.config.apiUrl, formData)
-        .subscribe((response) => {
-          if (response['status'] == this.config.OTYES) {
-            localStorage.setItem('userId', response['data'].userid);
-            localStorage.setItem('userid', response['data'].userid);
-            localStorage.setItem('uname', response['data'].uname);
-            localStorage.setItem('roleId', response['data'].roleid);
-            this.config.showSuccessToaster(response['feedback'])
-            this.router.navigateByUrl('/pages/newsurvey');
-            this.config.doSync();
-            this.getSettings();
-          } else {
-            this.config.showErrorToaster(response['feedback'])
-          }
+              this.tokenFromRequest = this.config.doEncrypt(this.successResponseArray[0]['Token']);
+              this.userIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['userId']);
+              this.roleIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['roleId']);
+              this.role = this.successResponseArray[0]['roleId'];
+              localStorage.setItem('roleId', this.roleIdFromRequest);
+              localStorage.setItem('token', this.tokenFromRequest);
+              localStorage.setItem('userId', this.userIdFromRequest);
+              localStorage.setItem('name', this.successResponseArray[0]['name']);
+              localStorage.setItem('username', this.successResponseArray[0]['username']);
+              localStorage.setItem('user', userName.value);
+              localStorage.setItem('deviceid' + this.successResponseArray[0]['userId'], this.successResponseArray[0]['singleloginhash']);
+              
+              
+            }
+            else {
+              //this.config.showErrorToaster('Authentication Failed..!');
+              this.config.showErrorToaster(this.successResponseArray[0]['Feedback']);
 
-        },
-          (error) => {
-            this.config.showErrorToaster('Network Error occured..');
-          }
-        );
+            }
+          },
+            (error) => {
 
+              var errorData = Object.keys(error['error']).map(key => ({ keyname: key, value: error['error'][key] }));
+              //this.config.showErrorToaster('Invalid Username or Password');        
+            }
+          );
+      } else {
+        this.doOfflineLogin(userName.value, password.value)
+      }
     }
     else {
       console.log(this.errorResponseArray);
       this.config.showErrorToaster(this.config.validationError);
     }
   }
+  doOfflineLogin(uname, password) { 
+    var username = uname;
+    let encryptedStoredPassword = localStorage.getItem(username + '-password');
+    if (encryptedStoredPassword != null && encryptedStoredPassword != '' && encryptedStoredPassword != undefined) {
+      let stroredPassword = this.config.doDecrypt(encryptedStoredPassword);
+      if (stroredPassword == password) {
+        let encryptedUserData = localStorage.getItem(username + '-data');
+        let userData = this.config.doDecrypt(encryptedUserData);
+        let userDataObj = JSON.parse(userData);
+        this.successResponseArray.push(userDataObj);
+        this.tokenFromRequest = this.config.doEncrypt(this.successResponseArray[0]['Token']);
+        this.userIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['userId']);
+        this.roleIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['roleId']);
+        this.role = this.successResponseArray[0]['roleId'];
+        localStorage.setItem('roleId', this.roleIdFromRequest);
+        localStorage.setItem('token', this.tokenFromRequest);
+        localStorage.setItem('userId', this.userIdFromRequest);
+        localStorage.setItem('username', this.successResponseArray[0]['username']);
+        localStorage.setItem('user', uname);
+        localStorage.setItem('deviceid' + this.successResponseArray[0]['userId'], this.successResponseArray[0]['singleloginhash']);
+
+
+          this.router.navigateByUrl('/newsurvey');
+
+      } else {
+        this.config.showErrorToaster('Authentication Failed..!');
+      }
+
+    } else {
+      this.config.showErrorToaster('Authentication Failed..!');
+    }
+
+
+  }
+
 
 
 

@@ -1,7 +1,7 @@
 <nb-card>
     <nb-card-header> Conduct Survey </nb-card-header>
     <nb-card-body>
-        
+        <div *ngIf="gpsTrack">
          <nb-progress-bar [value]="rectime"  status="warning" [displayValue]="false">{{rectime}}</nb-progress-bar><br/>
 
         <div class="form-group" >
@@ -69,14 +69,19 @@
                   <textarea class='icon_mandatory'  rows="5" nbInput fullWidth  placeholder="Feedback"></textarea>
             </div>
         </div>
-
-
+        <br/>
+</div>
+<div *ngIf="!gpsTrack">
+         <nb-alert status="danger">Please on GPS!</nb-alert>
+      </div>
         <div id="mapId2" class="col-sm-12"></div>
-
+<div *ngIf="gpsTrack">"
         <div class="form-group"> 
-            <button mat-mini-fab nbButton status="primary" class='col-sm-12' >Submit</button>
+            <button mat-mini-fab nbButton status="primary" class='col-sm-12' (click)="dosubmit()">Submit</button>
 
         </div>
+      </div>
+      
 
 
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Leaflet from 'leaflet';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'ngx-mapreport',
@@ -27,14 +28,25 @@ export class MapreportComponent implements OnInit {
     lat : any='8.5241';
     lng :any='76.9366';
     url:string='';error;
-    constructor(private domSanitizer: DomSanitizer) {}
+    constructor(private domSanitizer: DomSanitizer,public config: ConfigService) {}
     sanitize(url: string) {
         return this.domSanitizer.bypassSecurityTrustUrl(url);
     }
 
    ngOnInit(): void {
+    if (this.config.map == this.config.OTYES) {
+        this.refresh();
+    }
     this.createMap();
+
    }
+
+   refresh(): void {
+    window.location.reload();
+  }
+    ngOnDestroy(): void {
+    this.map.remove();
+  }
    leafletMap(): void {  
     Leaflet.marker([this.lat,  this.lng], { draggable: false, icon: this.greenIcon }).addTo(this.map)
     .bindPopup('<b>Ram</b><audio controls>  <source src="horse.ogg" type="audio/ogg">  <source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>');
