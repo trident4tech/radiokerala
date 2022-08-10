@@ -18,9 +18,9 @@ export class MainComponent implements OnInit {
             
         
 
-	   this.loadData();
+	  // this.loadData();
   }
-    loadData () {
+    /*loadData () {
         var dest = '';
         if (localStorage.getItem('maindest')!='Select All')
             dest = localStorage.getItem('maindest');
@@ -40,6 +40,6 @@ export class MainComponent implements OnInit {
         console.log(error);
       }
     );
-    }
+    }*/
 
 }

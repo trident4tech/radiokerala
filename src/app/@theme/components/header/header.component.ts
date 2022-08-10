@@ -123,8 +123,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     localStorage.setItem('maindest','');
     if (selectedValue!='Select All') {
       localStorage.setItem('maindest',selectedValue);
-      let myCompOneObj = new MainComponent(this.config,this.http);
-      myCompOneObj.loadData();
+      // let myCompOneObj = new MainComponent(this.config,this.http);
+      // myCompOneObj.loadData();
     }
     window.location.reload();
   }
