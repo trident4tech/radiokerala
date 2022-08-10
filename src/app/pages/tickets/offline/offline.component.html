@@ -11,135 +11,21 @@
               <tr>               
                 <th>#</th>
                 <th>Action</th>
-                <th>Date</th>
-                <th>Ticket Number</th>
-                <th>Category</th>
-                <th>Total Rate</th>
+                <th>Time</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                
             </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of ticketDetails;let i=index;" ><td>  {{(i+1)}}</td>
-                  <td><button nbButton  (click)="doPrint(item['tpNumber'])">
-     <i class="fa fa-print"></i> </button>
+                  <td><button nbButton  (click)="view(item)">
+     <i class="fa fa-eye"></i> </button>
      </td>
     <td> {{item['date']}} @ {{item['time']}}</td>
-    <td> {{item['tpNumber']}}</td>
-    <td [innerHTML]="item['content']"></td>
-    <td> {{item['rate']}}
-
-<div  id="print-content{{item['tpNumber']}}" style='max-width:500px;background-color:#fff;display: none;'>
-
-<table style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%" cellspacing="0" cellpadding="3" border="0">
-  <tbody><tr>
-    <td align="center"><strong>{{appTitle}}</strong></td>
-  </tr>
-  <tr>
-    <td style="font-size: 10px;" align="center">{{item['destName']}}, {{item['destPlace']}} - {{item['destPin']}}<br> Ph: {{item['destPhone']}}</td>
-  </tr>
-  <tr>
-    <td>
-    <table style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold" width="100%" cellspacing="0" cellpadding="3" border="1">
-        <tbody>
-          <tr style="font-size: 12px;">
-            <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
-            <th style=" border-bottom: solid 2px;" align="left">Qty</th>
-            <th style=" border-bottom: solid 2px;" align="left">Price</th>
-          </tr>
-          <tr *ngFor="let classdata of item['classdata'];let j =index;">
-            <td>{{classdata['className']}}</td>
-            <td>{{classdata.classQuantity}}</td>
-            <td>{{classdata.classRate*classdata.classQuantity}}</td>
-          </tr>          
-        </tbody>
-    </table></td>
-  </tr>
-  <tr>
-    <td style="padding-top: 10px;" valign="middle" align="center"><strong>Price ----- Rs. {{item['actualrate']}}</strong></td>
-  </tr>
-  <tr>
-    <td align="center"><hr color="#000000"></td>
-  </tr>
-  <tr>
-    <td style="font-size:12px;" align="center"><table width="100%" cellspacing="0" cellpadding="3" border="0">
-      <tbody>
-        <tr>
-          <td width="20%" valign="top"> <qrcode [qrdata]="item['tpNumbernew']" [width]="120" [errorCorrectionLevel]="'M'" elementType="'svg'"></qrcode>  </td>
-          <td width="80%" valign="top"><table width="100%" cellspacing="0" cellpadding="3" border="0">
-            <tbody>
-              <tr>
-                <td style="font-size:11px;"><strong>{{item['tpNumber']}} | {{item['date']}} {{item['time']}}</strong></td>
-              </tr>
-              <tr>
-                <td style="font-size:10px;">*This ticket is not retainable or refundable<br>
-**Keep this ticket till you leave the destination</td>
-              </tr>
-
-              <tr *ngIf="allowTerms==config.OTYES && terms.length>0"><td>
-                 <table><tr *ngFor="let term of terms;let i=index;" style="font-size:10px;line-height: 7px;" >
-                  <td>{{term}}</td>
-                 </tr></table></td>
-              </tr>
-              
-              <tr >
-                <td style="font-size:10px;" class='terms'>
-                  <table>
-                    <tr style="font-size:10px;line-height: 11px;" >
-                        <td [innerHTML]="item['cgstData']"> </td>
-                    </tr>
-                  <tr style="font-size:10px;line-height: 11px;" >
-                        <td [innerHTML]="item['sgstData']"> </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-             
-              <tr>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td style="font-size:11px;">{{item['destwebsite']}}</td>
-              </tr>
-            </tbody>
-          </table></td>
-        </tr>
-      </tbody>
-    </table></td>
-  </tr>
-</tbody></table>
-<div style="page-break-after: always"></div>
-  <table style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;" width="100%" cellspacing="0" cellpadding="3" border="0">
-  <tbody>
-    <tr>
-      <td style="font-size:12px;" align="center"><strong>{{item['destName']}} - {{item['destPlace']}}</strong></td>
-    </tr>
-    <tr>
-      <td style="font-size:12px;" align="center">Ticket No. {{item['tpNumber']}} | {{item['date']}} {{item['time']}}</td>
-    </tr>
-    <tr>
-      <td>
-      <table style="border-collapse: collapse; border:solid 2px #000000; padding-top:8px; padding-bottom:8px; font-size: 14px; font-weight: bold" width="100%" cellspacing="0" cellpadding="3" border="1">
-        <tbody>
-          <tr style="font-size: 12px;">
-            <th style=" border-bottom: solid 2px;" align="left">Ticket</th>
-            <th style=" border-bottom: solid 2px;" align="left">Qty</th>
-            <th style=" border-bottom: solid 2px;" align="left">Price</th>
-          </tr>
-           <tr *ngFor="let classdata of item['classdata'];let j =index;">
-            <td>{{classdata.className}}</td>
-            <td>{{classdata.classQuantity}}</td>
-            <td>{{classdata.classRate*classdata.classQuantity}}</td>
-          </tr> 
-        </tbody>
-      </table></td>
-    </tr>
-    <tr>
-      <td valign="middle" align="center"><strong>Price ------- Rs.{{item['actualrate']}}</strong></td>
-    </tr>
-  </tbody>
-</table>
-
-</div>
-</td></tr></tbody></table>
+    <td> {{item['name']}}</td>
+    <td> {{item['mob']}}</td>
+  </tr></tbody></table>
 
 
 

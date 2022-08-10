@@ -77,12 +77,23 @@ import { AddComponent as assemblyAdd  } from './assembly/add/add.component';
 import { EditComponent as assemblyEdt } from './assembly/edit/edit.component';
 import {  ListComponent as assemblyList } from './assembly/list/list.component';
 import { MapreportComponent } from './mapreport/mapreport.component';
+import { ViewsurveyComponent } from './viewsurvey/viewsurvey.component';
+import { SurveylistComponent } from './surveylist/surveylist.component';
+import { ViewsurComponent } from './viewsur/viewsur.component';
+
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
-  children: [    
-
+  children: [ 
+  {
+      path: 'viewsur',
+      component: ViewsurComponent,
+    }, 
+   {
+      path: 'survey',
+      component: SurveylistComponent,
+    }, 
      {
       path: 'mapreport',
       component: MapreportComponent,
@@ -141,12 +152,16 @@ const routes: Routes = [{
       path: 'aclcategories/:reference',
       component: CategoriesComponent,
     }, 
+     {
+      path: 'offline',
+      component: OfflineComponent,
+    }, 
     
-    /*{
-      path: 'dashboard',
-      component: MainComponent,
+    {
+      path: 'viewsuvey',
+      component: ViewsurveyComponent,
     },
-    
+    /*
     {
       path : 'listalert',
       component :alertList,
@@ -392,8 +407,12 @@ const routes: Routes = [{
         .then(m => m.MiscellaneousModule),
     },
     {
+      path: 'dashboard',
+      component: MainComponent,
+    },
+    {
       path: '',
-      redirectTo: 'newsurvey',
+      redirectTo: 'dashboard',
       pathMatch: 'full',
     },
     {

@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfigService } from '../../config.service';
 import { HttpClient } from '@angular/common/http';
+import { map,startWith } from 'rxjs/operators';
 import { NbDialogService } from '@nebular/theme';
+import { Observable, of , Observer, fromEvent, merge} from 'rxjs';
+import {Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AddconstantsComponent } from '../../addconstants/addconstants.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ScheduledconstantsComponent } from '../scheduledconstants/scheduledconstants.component';
-import { ConfirmComponent } from '../../pages/tickets/confirm/confirm.component';
 import { DatePipe } from '@angular/common'
 import * as Leaflet from 'leaflet';
-
+import { DomSanitizer } from '@angular/platform-browser';
 
 imports: [CommonModule, MatTooltipModule]
 declare var $: any;
 import * as RecordRTC from 'recordrtc';
-import { DomSanitizer } from '@angular/platform-browser';
+
 
 
 @Component({
@@ -24,9 +24,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class ListconstantsComponent implements OnInit {
+  isConnected :boolean;  
   map: Leaflet.Map;
   audioblob : any;
   public marker: any = '';
+  ticketDetails:any = []; 
   public greenIcon = Leaflet.icon({
     iconUrl: '../../../../assets/icons/marker-icon.png',
     /*shadowUrl: 'leaf-shadow.png'*/
@@ -37,12 +39,19 @@ export class ListconstantsComponent implements OnInit {
   rectime:number=100;
   maxrecord : number = 100;
   interval:any;
-  lat : any='8.5241';
-  lng :any='76.9366';
+  lat : any=7.52;
+  lng :any=8.56;
   url:string='';
   error;
+  public errorResponseArray:any=[];
   gpsTrack:boolean = false;
-  constructor(public http: HttpClient,public config: ConfigService,private domSanitizer: DomSanitizer) {}
+  public name:any='';
+  public types:any='';
+  public quality:any='';
+  public mob:any='';
+  public feedback:any ='';
+  public accuracy:any='';
+  constructor(private router: Router,public http: HttpClient,public config: ConfigService,private domSanitizer: DomSanitizer) {}
   sanitize(url: string) {
     return this.domSanitizer.bypassSecurityTrustUrl(url);
   }/**
@@ -96,6 +105,20 @@ this.record.stop(this.processRecording.bind(this));
   }
   ngOnInit() {
     this.config.map = this.config.OTYES;
+    let roleid = localStorage.getItem('role');
+    if (roleid=='1') {
+      this.router.navigateByUrl('pages/mapreport');
+    }
+    this.name = localStorage.getItem('tname');
+    this.mob = localStorage.getItem('mob');
+    this.isConnected = true;  
+    this.createOnline$().subscribe(isOnline => this.isConnected = isOnline);
+    this.errorResponseArray['name'] = '';
+    this.errorResponseArray['mob'] = '';
+    this.errorResponseArray['gps'] = '';
+    this.errorResponseArray['type'] = '';
+    this.errorResponseArray['quality'] = '';
+    this.errorResponseArray['url'] = '';    
     this.getLocation();
    }
   getLocation() {
@@ -105,6 +128,7 @@ this.record.stop(this.processRecording.bind(this));
           this.gpsTrack = true;
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
+          this.accuracy = position.coords.accuracy;
           this.createMap();
         }
       },
@@ -163,55 +187,130 @@ this.record.stop(this.processRecording.bind(this));
     this.map.remove();
   }
   dosubmit() { 
-    // this.errorResponseArray['des'] = '';
-    // this.errorResponseArray['lat'] = '';
-    // this.errorResponseArray['img'] = '';
-     let noError = true;
+    localStorage.setItem('tname',this.name);
+    localStorage.setItem('mob',this.mob);
+    this.errorResponseArray['name'] = '';
+    this.errorResponseArray['mob'] = '';
+    this.errorResponseArray['gps'] = '';
+    this.errorResponseArray['type'] = '';
+    this.errorResponseArray['quality'] = '';
+    this.errorResponseArray['url'] = '';
+    let noError = true;
+    if ( this.lng == null || this.lng == '' || this.lng === undefined ){
+      this.errorResponseArray['gps'] = 'Please select Location';
+       noError = false;
+    }
 
-    // if ( this.lng == null || this.lng == '' || this.lng === undefined ){
-    //   this.errorResponseArray['lat'] = 'Please select Location';
-    //   noError = false;
-    // }
-
-    // if (this.html == '') {  
-    //   this.errorResponseArray['des'] = 'Please enter the Details';
-    //   noError = false;
-    // }
-    // if ( this.lat == '') { 
-    //   this.errorResponseArray['lat'] = 'Please select the location';
-    //   noError = false;
-    // }
-         
-    //  if ( this.fileCount==0 && this.detail.length==0) { 
-    //   this.errorResponseArray['img'] = 'Please select the image';
-    //   noError = false;
-    // }
+    if (this.name == '') {  
+       this.errorResponseArray['name'] = 'Please enter the Name';
+       noError = false;
+    }
+    if (this.quality == '') {  
+       this.errorResponseArray['quality'] = 'Please select the Audio Quality';
+       noError = false;
+    }
+    if (this.types == '') {  
+       this.errorResponseArray['type'] = 'Please select the Source Type';
+       noError = false;
+    }
+    if (this.mob == '') {  
+       this.errorResponseArray['mob'] = 'Please enter the Mobile No.';
+       noError = false;
+    }
+    else {
+    const pattern = /^\d+(\.\d{10})?$/ ; // without ., for integer only
+      let inputChar = this.mob;
+      if (!pattern.test(this.mob)) {
+      this.errorResponseArray['mob'] = 'Invalid Mobile No.';
+      noError=false;   
+    }   
+  }
+     if (this.url == '') {  
+       this.errorResponseArray['url'] = 'Please add the audio';
+       noError = false;
+    }
  
 
-    if ( noError ) {
+    if ( noError ) {        
         let userId=this.config.doDecrypt(localStorage.getItem('userId'));
-        const formData = new FormData();
-        formData.append("file[]", this.audioblob);
-        
+        var date = new Date(); 
+        if (this.isConnected) {
+          const formData = new FormData();
+          formData.append("name[]", this.name);
+          formData.append("mob[]", this.mob);
+          formData.append("type[]", this.types);
+          formData.append("quality[]", this.quality);
+          formData.append("lat[]", this.lat);
+          formData.append("lng[]", this.lng);
+          formData.append("feedback[]", this.feedback);
+          formData.append("acc[]", this.accuracy);
+          formData.append("usr[]", userId);
+          formData.append("file[]", this.audioblob); 
+          formData.append("offline[]", this.config.OTNO+'');
+          formData.append("dbdate[]" , date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate());
+          formData.append("date[]" , date.getFullYear()+date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear());
+          formData.append("time[]" ,date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()  );
           
-        this.http.post(this.config.apiUrl+'v1/hotel/addaudio',formData)
-        .subscribe(
-          (response) => {
-        console.log(response);
-           this.config.checkStatus(response['Status'],response['version']);
-            this.config.showSuccessToaster('The survey has been successfuly added ');           
-          },
-          (error)=>{
-            console.log(error);
-            this.config.showErrorToaster('The survey insertion has been failed');
-          }
-        );
+            
+           this.http.post(this.config.apiUrl+'v1/survey/add',formData)
+          .subscribe(
+            (response) => {
+             this.config.checkStatus(response['Status'],response['version']);
+              this.config.showSuccessToaster('The survey has been successfuly added ');           
+            },
+            (error)=>{
+              console.log(error);
+              this.config.showErrorToaster('The survey insertion has been failed');
+            }
+          );
+      }
+     else {
+        this.ticketDetails = JSON.parse(localStorage.getItem('ticketDetails'));
+        let data = {};
+        data['name'] =  this.name;
+        data['mob'] =  this.mob;
+        data['type'] =  this.types;
+        data['quality'] =  this.quality;
+        data['lat'] =   this.lat;
+        data['lng'] =  this.lng;
+        data['feedback'] =   this.feedback;
+        data['acc'] =   this.accuracy;
+        data['usr'] =   userId;
+        data['file'] =   this.audioblob;  
+        data['offline'] =   this.config.OTYES+'';
+        data['url'] =   this.url;
+        data['date'] = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+        data['time'] = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()  ;
+        data['dbdate'] = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+               
+        this.ticketDetails.push(data);
+        let json = JSON.stringify(this.ticketDetails);
+        console.log(this.ticketDetails);
+        localStorage.setItem('ticketDetails',json);  
+        console.log(localStorage.getItem('ticketDetails'));
+       this.config.showSuccessToaster('The survey has been successfuly added in offline'); 
+      }
     }
     else {
      // console.log(this.errorResponseArray);
       this.config.showErrorToaster(this.config.validationError);
     }
+  }  
+  getSelectTypeValue(val) {
+    this.types = val;
   }
+   getSelectValue(val: any): void {
+    this.quality = val;
+  }
+  createOnline$() {
+return merge<boolean>(
+  fromEvent(window, 'offline').pipe(map(() => false)),
+  fromEvent(window, 'online').pipe(map(() => true)),
+  new Observable((sub: Observer<boolean>) => {
+  sub.next(navigator.onLine);
+  sub.complete();
+  }));
+}
 
 }
 

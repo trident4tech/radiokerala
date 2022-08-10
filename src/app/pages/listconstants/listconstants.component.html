@@ -1,6 +1,7 @@
 <nb-card>
     <nb-card-header> Conduct Survey </nb-card-header>
     <nb-card-body>
+      <form #form="ngForm" >
         <div *ngIf="gpsTrack">
          <nb-progress-bar [value]="rectime"  status="warning" [displayValue]="false">{{rectime}}</nb-progress-bar><br/>
 
@@ -11,13 +12,20 @@
            <div class="form-group" >
               <audio controls="" *ngIf="url!=''" class="col-sm-12">
                 <source [src]="sanitize(url)" type="audio/wav"></audio>
+                  <span
+            *ngIf="errorResponseArray['url']">
+            <font class='error'>{{errorResponseArray['url']}}</font>
+          </span>
         </div>
 
         <div class="col-sm-12 row form-group" >
+
              <label for="name" class="label col-sm-3 col-form-label">Tester Name:</label>
              <div class="col-sm-9">
-
-                  <input class='icon_mandatory'   required type="text" nbInput fullWidth  placeholder="Enter the Name">
+                <input class='icon_mandatory'   [(ngModel)]="name" name="name" required type="text" nbInput fullWidth [status]="errorResponseArray['name']!==''?'danger':'basic'" placeholder="Enter the Name"><span
+            *ngIf="errorResponseArray['name']">
+            <font class='error'>{{errorResponseArray['name']}}</font>
+          </span>
                
             </div>
             </div>
@@ -25,48 +33,60 @@
              <label for="name" class="label col-sm-3 col-form-label">Tester Mobile:</label>
              <div class="col-sm-9">
 
-                  <input class='icon_mandatory'   required type="text" nbInput fullWidth  placeholder="Enter the Mobile No.">
+                 <input class='icon_mandatory' [(ngModel)]="mob" name="mob" required type="text" nbInput fullWidth 
+            [status]="errorResponseArray['mob']!==''?'danger':'basic'" placeholder="Enter the Mobile No."><span
+            *ngIf="errorResponseArray['mob']">
+            <font class='error'>{{errorResponseArray['mob']}}</font>
+          </span>
                
             </div>
             </div>
             <div class="col-sm-12 row form-group" >
              <label for="name" class="label col-sm-3 col-form-label">Audio Quality</label>
-             <div class="col-sm-9">
-               <nb-radio-group >
+             <div class="col-sm-9" >
+               <nb-radio-group ngModel name="quality" #quality >
             <nb-radio
-              [value]="'This is value 1'">
+              [value]="1" (valueChange)="getSelectValue(1)" >
+              Very Good
+            </nb-radio>
+            <nb-radio 
+              [value]="2" (valueChange)="getSelectValue(2)">
               Good
             </nb-radio>
             <nb-radio
-              [value]="'This is value 2'">
-              Moderate
-            </nb-radio>
-            <nb-radio
-              [value]="'This is value 3'">
-              Weak
+              [value]="3" (valueChange)="getSelectValue(3)" >
+              Poor
             </nb-radio>
           </nb-radio-group>
+          <span
+            *ngIf="errorResponseArray['quality']">
+            <font class='error'>{{errorResponseArray['quality']}}</font>
+          </span>
             </div>
         </div>
         <div class="col-sm-12 row form-group" >
              <label for="name" class="label col-sm-3 col-form-label">Source Type</label>
              <div class="col-sm-9">
-               <nb-radio-group >
+               <nb-radio-group ngModel name="types" #types>
             <nb-radio
-              [value]="'This is value 1'">
+              [value]="1" (valueChange)="getSelectTypeValue(1)" >
               Car Radio
             </nb-radio>
             <nb-radio
-              [value]="'This is value 2'">
+              [value]="2" (valueChange)="getSelectTypeValue(2)" >
               Normal Radio
             </nb-radio>
           </nb-radio-group>
+           <span
+            *ngIf="errorResponseArray['type']">
+            <font class='error'>{{errorResponseArray['type']}}</font>
+          </span>
             </div>
         </div>
         <div class="col-sm-12 row form-group" >
              <label for="name" class="label col-sm-3 col-form-label">Feedback</label>
              <div class="col-sm-9">
-                  <textarea class='icon_mandatory'  rows="5" nbInput fullWidth  placeholder="Feedback"></textarea>
+                  <textarea   rows="5" nbInput fullWidth  placeholder="Feedback" [(ngModel)]="feedback" name="feedback"></textarea>
             </div>
         </div>
         <br/>
@@ -74,8 +94,12 @@
 <div *ngIf="!gpsTrack">
          <nb-alert status="danger">Please on GPS!</nb-alert>
       </div>
-        <div id="mapId2" class="col-sm-12"></div>
-<div *ngIf="gpsTrack">"
+        <div id="mapId2" class="col-sm-12"></div><br/>
+        <span
+            *ngIf="errorResponseArray['gps']">
+            <font class='error'>{{errorResponseArray['gps']}}</font>
+          </span>
+<div *ngIf="gpsTrack">
         <div class="form-group"> 
             <button mat-mini-fab nbButton status="primary" class='col-sm-12' (click)="dosubmit()">Submit</button>
 
@@ -90,7 +114,7 @@
 
 
 
-
+</form>
 
 
 

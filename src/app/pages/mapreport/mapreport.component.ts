@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import * as Leaflet from 'leaflet';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigService } from '../../config.service';
+import {Router} from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'ngx-mapreport',
@@ -9,14 +12,28 @@ import { ConfigService } from '../../config.service';
   styleUrls: ['./mapreport.component.scss']
 })
 export class MapreportComponent implements OnInit {
+    public items :any[] = [];
+    public successResponseArray: any[] = [];
+    public errorResponseArray: any[] = [];
+    public searchTerm: string = '';
+    public viewaction: any;
+    qual:any[];
     map: Leaflet.Map;
     public marker: any = '';
     public greenIcon = Leaflet.icon({
-    iconUrl: '../../../../assets/icons/marker-icon.png',
+    iconUrl: '../../../../assets/icons/marker-green.png',
+    /*shadowUrl: 'leaf-shadow.png'*/
+      });
+      public mark = Leaflet.icon({
+    iconUrl: '../../../../assets/icons/marker-green.png',
+    /*shadowUrl: 'leaf-shadow.png'*/
+      });
+       public redIcon = Leaflet.icon({
+    iconUrl: '../../../../assets/icons/marker-red.png',
     /*shadowUrl: 'leaf-shadow.png'*/
     });
-    public redIcon = Leaflet.icon({
-    iconUrl: '../../../../assets/icons/marker-red.png',
+   public yellowIcon = Leaflet.icon({
+    iconUrl: '../../../../assets/icons/marker-yellow.png',
     /*shadowUrl: 'leaf-shadow.png'*/
     });
      //Lets declare Record OBJ
@@ -28,18 +45,41 @@ export class MapreportComponent implements OnInit {
     lat : any='8.5241';
     lng :any='76.9366';
     url:string='';error;
-    constructor(private domSanitizer: DomSanitizer,public config: ConfigService) {}
+    constructor(private router: Router,
+    public http: HttpClient,private domSanitizer: DomSanitizer,public config: ConfigService) {}
     sanitize(url: string) {
         return this.domSanitizer.bypassSecurityTrustUrl(url);
     }
 
    ngOnInit(): void {
-    if (this.config.map == this.config.OTYES) {
-        this.refresh();
+    let roleid = localStorage.getItem('role');
+    if (roleid!='1') {
+      this.router.navigateByUrl('pages/newsurvey');
     }
-    this.createMap();
-
+    this.items = [];
+    if (this.config.map == this.config.OTYES) 
+        this.refresh();
+    this.loadData();
    }
+   loadData() {
+      this.config.targeturl = this.config.apiUrl+'v1/survey/list';
+    let userId=this.config.doDecrypt(localStorage.getItem('userId'));
+    this.config.postdata = {
+       userid:userId,
+      token: this.config.doDecrypt(localStorage.getItem('token'))
+    };   
+    this.http.post(this.config.targeturl,this.config.postdata).subscribe(
+      (response) => {this.config.checkStatus(response['Status'],response['version']);
+        this.successResponseArray=[];
+        this.successResponseArray.push(response);
+        this.items=response['Data']; 
+        this.createMap(); 
+      },
+      (error)=>{
+        console.log(error);
+      }
+    );
+}
 
    refresh(): void {
     window.location.reload();
@@ -47,13 +87,35 @@ export class MapreportComponent implements OnInit {
     ngOnDestroy(): void {
     this.map.remove();
   }
-   leafletMap(): void {  
-    Leaflet.marker([this.lat,  this.lng], { draggable: false, icon: this.greenIcon }).addTo(this.map)
-    .bindPopup('<b>Ram</b><audio controls>  <source src="horse.ogg" type="audio/ogg">  <source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>');
-     Leaflet.marker([11.8745,  75.3704], { draggable: false, icon: this.greenIcon }).addTo(this.map)
-    .bindPopup('<b>Jay</b><audio controls>  <source src="horse.ogg" type="audio/ogg">  <source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>');
-    Leaflet.marker([9.5916,  76.5222], { draggable: false, icon: this.redIcon }).addTo(this.map)
-    .bindPopup('<b>Thomas</b><audio controls>  <source src="horse.ogg" type="audio/ogg">  <source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>');
+   leafletMap(): void { 
+    let type='';
+    let quality='';
+   this.items.forEach(ticket => {
+    this.mark = this.greenIcon;
+    if (ticket.sr_quality==1)
+        quality = 'Very Good';
+    else if (ticket.sr_quality==2) {
+        quality = 'Good';
+        this.mark = this.yellowIcon;
+    }
+    else {
+        quality ='Poor';
+        this.mark = this.redIcon;
+    }
+    if (ticket.sr_type==1)
+        type = 'Car Radio';
+    else
+        type ='Normal Radio';
+    Leaflet.marker([ticket.sr_lat,  ticket.sr_lng], { draggable: false, icon: this.mark }).addTo(this.map)
+    .bindPopup('<b>'+ticket.sr_name+'('+ticket.sr_mob+')</b><br/>'+type+'<br/><i>'+ticket.sr_feedback+'</i><br/><audio controls>  <source src='+this.config.fileurl+ticket.file_name+' type="audio/wav"> </audio>');
+    });
+
+   //  Leaflet.marker([this.lat,  this.lng], { draggable: false, icon: this.greenIcon }).addTo(this.map)
+   //  .bindPopup('<b>Ram</b><audio controls>  <source src="horse.ogg" type="audio/ogg">  <source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>');
+   //   Leaflet.marker([11.8745,  75.3704], { draggable: false, icon: this.greenIcon }).addTo(this.map)
+   //  .bindPopup('<b>Jay</b><audio controls>  <source src="horse.ogg" type="audio/ogg">  <source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>');
+   //  Leaflet.marker([9.5916,  76.5222], { draggable: false, icon: this.redIcon }).addTo(this.map)
+   //  .bindPopup('<b>Thomas</b><audio controls>  <source src="horse.ogg" type="audio/ogg">  <source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>');
   }
   createMap() {
     this.map = new Leaflet.Map('mapId2').setView([this.lat, this.lng], 6);

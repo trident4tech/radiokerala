@@ -11,8 +11,6 @@ CREATE TABLE danger_alert(
   deleted_at timestamp with time zone,
   deleted smallint DEFAULT 0 NOT NULL,
 
-###################################################################
-
 CREATE TABLE weather_alert(
   wa_id bigint NOT NULL,
   wa_date date,
@@ -81,8 +79,6 @@ CREATE TABLE danger_alert_alerts(
 
 ALTER TABLE ONLY weather_alert ALTER COLUMN wa_id SET DEFAULT nextval('weather_alert_wa_id_seq');
 ALTER TABLE ONLY weather_alert ADD CONSTRAINT weather_alert_pkey PRIMARY KEY (wa_id);
-
-#################################################################################################
 
 CREATE TABLE weather_destinations(
   wd_id bigint NOT NULL,

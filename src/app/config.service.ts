@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class ConfigService {
 
-
+  public fileurl  ='storage/files/';
   /**JIIMS Survey 23-July-2022 */
   public district: {} = [{ "key": 1, 'value': 'Kasaragod' }];
   public gpArray: {} = [{ "key": 1, 'value': 'Mavungal' }];
@@ -163,13 +163,15 @@ export class ConfigService {
     else {
       this.apiUrl = "https://api." + this.hostname + "/";
     }
+    this.apiUrl = "https://api.sandbox.ticketbuddy.in/";
+    this.fileurl = this.apiUrl+this.fileurl;
 
    // this.apiUrl = "https://jims.sandbox.webapiservices.in/api/";
 
 
     let host = this.hostname.replace('ticketbuddy.in', "");
-    document.title = host[0].toUpperCase() + host.substr(1).toLowerCase();
-    //this.getSettingsData();
+    document.title = 'Kerala Radio';//host[0].toUpperCase() + host.substr(1).toLowerCase();
+    this.getSettingsData();
   }
   //method is used to encrypt and decrypt the text  
   doEncrypt(ctext) {
@@ -215,14 +217,14 @@ export class ConfigService {
         (response) => {
           this.successResponseArray.push(response);
           if (this.successResponseArray[0]['Status'] == this.OTYES) {
-            this.appTitle = response['data']['APPTITLE'];
-            this.logourl = response['data']['TICKETLOGO'];
-            document.title = response['data']['TICKETTITLE'];
-            this.ticketTitle = response['data']['TICKETTITLE'];
-            localStorage.setItem('counterstaffRole', response['data']['COUNTER_ROLE'])
-            this.counterStaffId = response['data']['COUNTER_UGRP']
-            this.logo = response['data']['LOGO'];
-            this.terms = response['data']['TERMS'];
+            //this.appTitle = response['data']['APPTITLE'];
+            //this.logourl = response['data']['TICKETLOGO'];
+            //document.title = response['data']['TICKETTITLE'];
+            //this.ticketTitle = response['data']['TICKETTITLE'];
+            //localStorage.setItem('counterstaffRole', response['data']['COUNTER_ROLE'])
+            //this.counterStaffId = response['data']['COUNTER_UGRP']
+            //this.logo = response['data']['LOGO'];
+            /*this.terms = response['data']['TERMS'];
             this.dailyzoho = response['data']['DAILY_ZOHO'];
             this.miszoho = response['data']['MIS_ZOHO'];
             this.salezoho = response['data']['SALE_ZOHO'];
@@ -232,12 +234,13 @@ export class ConfigService {
             this.printfolio = parseInt(response['data']['PRINT_FOLIO']);
             localStorage.setItem('printfolio', response['data']['PRINT_FOLIO']);
             this.paymode = response['data']['PAYMODE'];
+            */
             this.version = response['data']['VERSION'];
-            let jsondata = JSON.stringify(this.terms.split(';'));
-            localStorage.setItem('terms', jsondata);
-            var link = <HTMLLinkElement>document.querySelector("link[rel~='icon']");
-            link.href = this.logo;
-            localStorage.setItem('appTitle', this.appTitle);
+            //let jsondata = JSON.stringify(this.terms.split(';'));
+            //localStorage.setItem('terms', jsondata);
+            // var link = <HTMLLinkElement>document.querySelector("link[rel~='icon']");
+            // link.href = this.logo;
+            // localStorage.setItem('appTitle', this.appTitle);
           }
           else {
             //                      //console.log(this.successResponseArray[0]['Feedback']);
@@ -706,33 +709,45 @@ export class ConfigService {
 
 
   public doSync() {
-    //Submitted Survey
-    let draftStr = localStorage.getItem('offlineSubmited');
-    let draftArray = {};
-    if (draftStr != '' && draftStr != null && draftStr != undefined) {
-      draftArray = JSON.parse(localStorage.getItem('offlineSubmited'));
-      var formData: any = new FormData();
-      formData.append('offlineData', JSON.stringify(draftArray));
-      formData.append('API_KEY', this.apiKey);
-      formData.append('service', "addsurvey");
-      this.http.post(this.apiUrl, formData)
-        .subscribe((response) => {
-          if (response['status'] == this.OTYES) {
-            localStorage.removeItem('offlineSubmited');
-          }
-          this.doSyncDraft();
-
-        },
-          (error) => {
-            this.doSyncDraft();
-
-          }
-        );
-    } else {
-      this.doSyncDraft();
-    }
-
-  }
+    const formData = new FormData();
+    let ticketDetails = JSON.parse(localStorage.getItem('ticketDetails'));
+        let json = localStorage.getItem('ticketDetails');//JSON.stringify(this.ticketDetails);
+        if (ticketDetails.length>0) {
+          let i = 0;
+          ticketDetails.forEach(function (val) {
+            formData.append("name["+i+"]", val.name);
+            formData.append("mob["+i+"]", val.mob);
+            formData.append("type["+i+"]", val.type);
+            formData.append("quality["+i+"]", val.quality);
+            formData.append("lat["+i+"]", val.lat);
+            formData.append("lng["+i+"]", val.lng);
+            formData.append("feedback["+i+"]", val.feedback);
+            formData.append("acc["+i+"]", val.acc);
+            formData.append("usr["+i+"]", val.usr);
+            formData.append("file["+i+"]", val.file); 
+            formData.append("offline["+i+"]", val.offline);
+            formData.append("dbdate["+i+"]" , val.dbdate);
+            formData.append("date["+i+"]" , val.date);
+            formData.append("time["+i+"]" ,val.time);
+            i++;
+          });
+            
+           this.http.post(this.apiUrl+'v1/survey/add',formData)
+          .subscribe(
+            (response) => {
+             this.checkStatus(response['Status'],response['version']);
+             ticketDetails = [];
+              let json = JSON.stringify(ticketDetails);
+              localStorage.setItem('ticketDetails',json); 
+              this.showSuccessToaster('The survey has been successfuly added ');           
+            },
+            (error)=>{
+              console.log(error);
+              this.showErrorToaster('The survey insertion has been failed');
+            }
+          );   
+        }       
+      }
 
   doSyncDraft() {
     let draftStr = localStorage.getItem('offlineSubmited');

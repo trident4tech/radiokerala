@@ -11,9 +11,9 @@ import { AdminComponent } from './users/admin/admin.component';
 import { MatTableModule} from '@angular/material/table';
 import { FormsModule as ngFormsModule } from '@angular/forms';
 import { ContextMenuModule } from 'ngx-contextmenu';
-import {ConnectionServiceModule} from 'ng-connection-service'; 
+import { ConnectionServiceModule} from 'ng-connection-service'; 
 import { SlideToggleModule } from 'ngx-slide-toggle';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule} from '@angular/cdk/drag-drop';
 import { NgAudioRecorderModule } from 'ng-audio-recorder';
 
 import {
@@ -123,6 +123,9 @@ import {  ListComponent as assemblyList } from './assembly/list/list.component';
 
 import { ClasslistComponent as clslist } from './tickets/classlist1/classlist.component';
 import { MapreportComponent } from './mapreport/mapreport.component';
+import { ViewsurveyComponent } from './viewsurvey/viewsurvey.component';
+import { SurveylistComponent } from './surveylist/surveylist.component';
+import { ViewsurComponent } from './viewsur/viewsur.component';
 
 
 @NgModule({
@@ -243,6 +246,9 @@ import { MapreportComponent } from './mapreport/mapreport.component';
     assemblyEdt,
     assemblyList,
     MapreportComponent,
+    ViewsurveyComponent,
+    SurveylistComponent,
+    ViewsurComponent,
   ],
 })
 export class PagesModule {

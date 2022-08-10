@@ -1,29 +1,12 @@
 <div class="row">
-  <div class="col-md-12 col-lg-6 col-xxxl-6 list-card-small">
-    <nb-card status="success">
-      <nb-card-header>Today's Tickets </nb-card-header>
-      <nb-card-body status="success"><h3>{{bookDetails['grantTicketNo']}}</h3></nb-card-body>
-    </nb-card>
-  </div>
-  
-  <div class="col-md-12 col-lg-6 col-xxxl-6 list-card-small">
-    <nb-card status="info">
-      <nb-card-header>Today's Collection</nb-card-header>
-      <nb-card-body><h3>Rs. {{bookDetails['grantTotal']}}</h3></nb-card-body>
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-body>
+        <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
+          <h2 class="title">Welcome</h2>
+          <!-- <small class="sub-title">The page you were looking for doesn't exist</small> -->
+        </div>
+      </nb-card-body>
     </nb-card>
   </div>
 </div>
-<div class="row" *ngFor="let classdatas of bookDetails['destinations'];let i =index;">
-   <div *ngIf="bookDetails['cash'][i]>0" class="col-md-12 col-lg-12 col-xxxl-12 list-card-small">
-  <nb-card status="">
-  <nb-card-header>{{classdatas}}</nb-card-header>
-</nb-card>
-</div>
-        <div class="col-md-12 col-lg-3 col-xxxl-3 list-card-small" *ngFor="let classdata of bookDetails['attrData'][i];let j =index;" >
-      <nb-card [status]="(j%2==0)?'success':'info'">
-        <nb-card-header>{{classdata['name']}}</nb-card-header>
-        <nb-card-body><h3>{{classdata['no']}}</h3></nb-card-body>
-      </nb-card>
-  </div>
-</div>
-

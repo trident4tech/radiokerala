@@ -31,15 +31,32 @@ export class PagesComponent {
 		this.createOnline$().subscribe(isOnline => {
 			this.isOnline = isOnline
 		});
-		//this.loadMenu();
+		
+		this.loadMenu();
 		//this.loadDataMenu();
 	}
 
 	loadMenu() {
 
+		if (localStorage.getItem('role')) {
+			let roleid = localStorage.getItem('role');
+			this.menu.forEach(element => {
+				element.hidden = false;
+				if (roleid=='1') {
+					if (element.title=='New Survey' || element.title=='Offline Data') {
+						element.hidden = true;
+					}
+				}
+				else 
+					if (element.title=='Survey List' || element.title=='GIS Dashboard') {
+						element.hidden = true;
+					}
+			});
+		}
+
+/*
 		if (localStorage.getItem('roleId')) {
 			if (this.isOnline) {
-
 				var formData: any = new FormData();
 				formData.append('API_KEY', this.config.apiKey);
 				formData.append('service', "masterlist");
@@ -65,6 +82,7 @@ export class PagesComponent {
 
 		//console.log(this.menuItems);
 		//this.nbMenuService.addItems(this.newMenuItem);
+		*/
 
 	}
 

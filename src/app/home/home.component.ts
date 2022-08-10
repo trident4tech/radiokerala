@@ -64,6 +64,8 @@ export class HomeComponent implements OnInit {
           'password': password.value,
         })
           .subscribe((response) => {
+            localStorage.setItem('tname','');
+            localStorage.setItem('mob','');
             this.successResponseArray = [];
             this.successResponseArray.push(response);
             this.showPrgress = false;
@@ -86,15 +88,19 @@ export class HomeComponent implements OnInit {
               this.tokenFromRequest = this.config.doEncrypt(this.successResponseArray[0]['Token']);
               this.userIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['userId']);
               this.roleIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['roleId']);
-              this.role = this.successResponseArray[0]['roleId'];
               localStorage.setItem('roleId', this.roleIdFromRequest);
+              localStorage.setItem('role', this.successResponseArray[0]['roleId']);
               localStorage.setItem('token', this.tokenFromRequest);
               localStorage.setItem('userId', this.userIdFromRequest);
               localStorage.setItem('name', this.successResponseArray[0]['name']);
               localStorage.setItem('username', this.successResponseArray[0]['username']);
               localStorage.setItem('user', userName.value);
               localStorage.setItem('deviceid' + this.successResponseArray[0]['userId'], this.successResponseArray[0]['singleloginhash']);
-              
+             if (this.successResponseArray[0]['roleId']=='1') {
+                this.router.navigateByUrl('/mapreport');
+              }
+              else
+                this.router.navigateByUrl('/newsurvey');
               
             }
             else {
@@ -106,7 +112,7 @@ export class HomeComponent implements OnInit {
             (error) => {
 
               var errorData = Object.keys(error['error']).map(key => ({ keyname: key, value: error['error'][key] }));
-              //this.config.showErrorToaster('Invalid Username or Password');        
+              this.config.showErrorToaster('Invalid Username or Password');        
             }
           );
       } else {
@@ -131,7 +137,7 @@ export class HomeComponent implements OnInit {
         this.tokenFromRequest = this.config.doEncrypt(this.successResponseArray[0]['Token']);
         this.userIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['userId']);
         this.roleIdFromRequest = this.config.doEncrypt('' + this.successResponseArray[0]['roleId']);
-        this.role = this.successResponseArray[0]['roleId'];
+        localStorage.setItem('role', this.successResponseArray[0]['roleId']);
         localStorage.setItem('roleId', this.roleIdFromRequest);
         localStorage.setItem('token', this.tokenFromRequest);
         localStorage.setItem('userId', this.userIdFromRequest);
@@ -139,7 +145,10 @@ export class HomeComponent implements OnInit {
         localStorage.setItem('user', uname);
         localStorage.setItem('deviceid' + this.successResponseArray[0]['userId'], this.successResponseArray[0]['singleloginhash']);
 
-
+        if (this.successResponseArray[0]['role']=='1') {
+                this.router.navigateByUrl('/mapreport');
+        }
+        else
           this.router.navigateByUrl('/newsurvey');
 
       } else {

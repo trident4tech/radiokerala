@@ -11,16 +11,21 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'pie-chart-outline',
     link: '/pages/newsurvey',
   },
-  // {
-  //   title: 'My Draft',
-  //   icon: 'list-outline',
-  //   link: '/pages/listdraft/qasdeirowehfkjsdfhuyeifnhsdfdiupow',
-  // },
   {
-    title: 'Map Report',
+    title: 'Offline Data',
+    icon: 'list-outline',
+    link: '/pages/offline',
+  },   
+  {
+    title: 'GIS Dashboard',
     icon: 'grid-outline',
     link: '/pages/mapreport/',
   },
+  {
+    title: 'Survey List',
+    icon: 'list-outline',
+    link: '/pages/survey',
+  }, 
   // {
   //   title: 'Access Control',
   //   icon: 'lock-outline',

@@ -52,8 +52,10 @@ export class AppComponent implements OnInit {
         this.config.updateLatest();
       });
     }
-    // this.createOnline$().subscribe(isOnline => this.isConnected = isOnline);
-
+     this.createOnline$().subscribe(isOnline => this.isConnected = isOnline);
+     if (this.isConnected) {
+      this.config.doSync();
+     }
   }
   @HostListener('window:keyup', ['$event'])
   keyEvent(event) {
@@ -69,7 +71,7 @@ export class AppComponent implements OnInit {
   @HostListener('window:online', ['$event'])
   onlineEvent(event) {
     this.createOnline$().subscribe(isOnline => this.isConnected = isOnline);
-      this.config.doSync();
+    this.config.doSync();
   }
 
   createOnline$() {
