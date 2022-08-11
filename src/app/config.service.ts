@@ -767,7 +767,7 @@ export class ConfigService {
              this.checkStatus(response['Status'],response['version']);
              ticketDetails = [];
               let json = JSON.stringify(ticketDetails);
-              //localStorage.setItem('ticketDetails',json); 
+              localStorage.setItem('ticketDetails',json); 
               this.showSuccessToaster('The survey has been successfuly added ');           
             },
             (error)=>{

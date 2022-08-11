@@ -258,6 +258,7 @@ this.record.stop(this.processRecording.bind(this));
             (response) => {
              this.config.checkStatus(response['Status'],response['version']);
               this.config.showSuccessToaster('The survey has been successfuly added ');           
+
             },
             (error)=>{
               console.log(error);
@@ -293,6 +294,9 @@ this.record.stop(this.processRecording.bind(this));
        this.config.showSuccessToaster('The survey has been successfuly added in offline'); 
       }
       this.clearData();
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate(['/pages/newsurvey']);
+      });
     }
     else {
      // console.log(this.errorResponseArray);
@@ -313,6 +317,8 @@ this.record.stop(this.processRecording.bind(this));
     this.url = '';
     this.audioblob = '';
     this.feedback = '';
+    this.types = null;
+    this.quality = null;
   }
   getSelectTypeValue(val) {
     this.types = val;

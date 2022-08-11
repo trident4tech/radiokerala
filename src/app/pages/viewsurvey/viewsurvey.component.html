@@ -1,7 +1,30 @@
 <nb-card>  
   <nb-card-header>View Survey<nb-icon icon="close-outline" (click)="dismiss()" class='right'></nb-icon></nb-card-header>
-  <nb-card-body>      
-           <div class="form-group row">
+  <nb-card-body>  
+          <div class="form-group row">
+            <div class="col-sm-12" >        
+             <audio controls>  <source [src]="sanitize(file)"  type="audio/wav"> </audio>
+            </div>
+            <label for="name" class="label col-sm-12 col-form-label">Tester Name</label>
+            <div class="col-sm-12">        
+             {{detail.name}}
+            </div>
+            <label for="name" class="label col-sm-12 col-form-label">Tester Mobile</label>
+            <div class="col-sm-12">        
+             {{detail.mob}}
+            </div>
+            <label for="name" class="label col-sm-12 col-form-label">Audio Quality</label>
+            <div class="col-sm-12">        
+             {{quality}}
+            </div>
+            <label for="name" class="label col-sm-12 col-form-label">Source Type</label>
+            <div class="col-sm-12">        
+             {{type}}
+            </div>
+            <label for="name" *ngIf="detail.sr_feedback!=''" class="label col-sm-12 col-form-label">Feedback</label>
+            <div class="col-sm-12" *ngIf="detail.sr_feedback!=''">        
+             {{detail.feedback}}
+            </div>
             <label for="name" class="label col-sm-12 col-form-label">Location</label>
             <div class="col-sm-12">        
               <div id="mapId2" class="col-sm-12"></div>

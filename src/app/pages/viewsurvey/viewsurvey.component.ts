@@ -12,6 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ViewsurveyComponent implements OnInit {
   map: Leaflet.Map;
+  public src:any='';
   audioblob : any;
   public marker: any = '';
   public greenIcon = Leaflet.icon({
@@ -75,6 +76,7 @@ export class ViewsurveyComponent implements OnInit {
    leafletMap(): void {     
     Leaflet.marker([this.detail.lat,  this.detail.lng], { draggable: false, icon: this.mark }).addTo(this.map)
     .bindPopup('<b>'+this.detail.name+'('+this.detail.mob+')</b><br/>'+this.type+'<br/><i>'+this.detail.feedback+'</i><br/><audio controls>  <source src='+this.file+' type="audio/wav"> </audio>');    
+    this.src= this.sanitize(this.url);
    }
   createMap() {
     this.arrayBase64toBlob();
@@ -85,8 +87,7 @@ export class ViewsurveyComponent implements OnInit {
     this.leafletMap();
    }
    sanitize(url: string) {
-    //  let aurl = URL.createObjectURL(this.detail.file);
-    // return this.domSanitizer.bypassSecurityTrustUrl(aurl);
+    return this.domSanitizer.bypassSecurityTrustUrl(url);
   }
 
   arrayBase64toBlob() {
@@ -100,6 +101,7 @@ export class ViewsurveyComponent implements OnInit {
     }
     const blob = new Blob([bytesa]);
     this.file = URL.createObjectURL(blob);
+    //this.src = "<audio controls>  <source src='"+this.sanitize(this.file)+"' type='audio/wav'> </audio>";
   }
 
 }
