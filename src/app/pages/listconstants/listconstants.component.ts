@@ -51,6 +51,7 @@ export class ListconstantsComponent implements OnInit {
   public mob:any='';
   public feedback:any ='';
   public accuracy:any='';
+  public noError:boolean=true;
   constructor(private router: Router,public http: HttpClient,public config: ConfigService,private domSanitizer: DomSanitizer) {}
   sanitize(url: string) {
     return this.domSanitizer.bypassSecurityTrustUrl(url);
@@ -186,7 +187,7 @@ this.record.stop(this.processRecording.bind(this));
    ngOnDestroy(): void {
     this.map.remove();
   }
-  dosubmit() { 
+  async dosubmit() { 
     localStorage.setItem('tname',this.name);
     localStorage.setItem('mob',this.mob);
     this.errorResponseArray['name'] = '';
@@ -195,43 +196,43 @@ this.record.stop(this.processRecording.bind(this));
     this.errorResponseArray['type'] = '';
     this.errorResponseArray['quality'] = '';
     this.errorResponseArray['url'] = '';
-    let noError = true;
+    this.noError = true;
     if ( this.lng == null || this.lng == '' || this.lng === undefined ){
       this.errorResponseArray['gps'] = 'Please select Location';
-       noError = false;
+       this.noError = false;
     }
 
     if (this.name == '') {  
        this.errorResponseArray['name'] = 'Please enter the Name';
-       noError = false;
+       this.noError = false;
     }
     if (this.quality == '') {  
        this.errorResponseArray['quality'] = 'Please select the Audio Quality';
-       noError = false;
+       this.noError = false;
     }
     if (this.types == '') {  
        this.errorResponseArray['type'] = 'Please select the Source Type';
-       noError = false;
+       this.noError = false;
     }
     if (this.mob == '') {  
        this.errorResponseArray['mob'] = 'Please enter the Mobile No.';
-       noError = false;
+       this.noError = false;
     }
     else {
     const pattern = /^\d+(\.\d{10})?$/ ; // without ., for integer only
       let inputChar = this.mob;
       if (!pattern.test(this.mob)) {
       this.errorResponseArray['mob'] = 'Invalid Mobile No.';
-      noError=false;   
+      this.noError=false;   
     }   
   }
      if (this.url == '') {  
        this.errorResponseArray['url'] = 'Please add the audio';
-       noError = false;
+       this.noError = false;
     }
  
 
-    if ( noError ) {        
+    if ( this.noError ) {        
         let userId=this.config.doDecrypt(localStorage.getItem('userId'));
         var date = new Date(); 
         if (this.isConnected) {
@@ -265,6 +266,8 @@ this.record.stop(this.processRecording.bind(this));
           );
       }
      else {
+        const arrayBuffer = await new Response(this.audioblob).arrayBuffer();
+        let file = this.arrayBufferToBase64(arrayBuffer);
         this.ticketDetails = JSON.parse(localStorage.getItem('ticketDetails'));
         let data = {};
         data['name'] =  this.name;
@@ -276,7 +279,7 @@ this.record.stop(this.processRecording.bind(this));
         data['feedback'] =   this.feedback;
         data['acc'] =   this.accuracy;
         data['usr'] =   userId;
-        data['file'] =   this.audioblob;  
+        data['file'] =   file;  
         data['offline'] =   this.config.OTYES+'';
         data['url'] =   this.url;
         data['date'] = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
@@ -287,15 +290,30 @@ this.record.stop(this.processRecording.bind(this));
         let json = JSON.stringify(this.ticketDetails);
         console.log(this.ticketDetails);
         localStorage.setItem('ticketDetails',json);  
-        console.log(localStorage.getItem('ticketDetails'));
        this.config.showSuccessToaster('The survey has been successfuly added in offline'); 
       }
+      this.clearData();
     }
     else {
      // console.log(this.errorResponseArray);
       this.config.showErrorToaster(this.config.validationError);
     }
   }  
+  arrayBufferToBase64(Arraybuffer) {
+        let binary = '';
+        const bytes = new Uint8Array(Arraybuffer);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        const file = window.btoa(binary);
+        return file;
+  }
+  clearData() {
+    this.url = '';
+    this.audioblob = '';
+    this.feedback = '';
+  }
   getSelectTypeValue(val) {
     this.types = val;
   }

@@ -42,6 +42,7 @@ export class ViewsurveyComponent implements OnInit {
   public detail:any;
   public type:any='';
   public quality:any='';
+  public file='';
   constructor(private domSanitizer: DomSanitizer,protected ref: NbDialogRef<ViewsurveyComponent>,public config:ConfigService,public http: HttpClient) { 
    // this.config.checkAccesswith404('viewuser');
   }
@@ -73,9 +74,10 @@ export class ViewsurveyComponent implements OnInit {
   }
    leafletMap(): void {     
     Leaflet.marker([this.detail.lat,  this.detail.lng], { draggable: false, icon: this.mark }).addTo(this.map)
-    .bindPopup('<b>'+this.detail.name+'('+this.detail.mob+')</b><br/>'+this.type+'<br/><i>'+this.detail.feedback+'</i><br/><audio controls>  <source src='+this.detail.file+' type="audio/wav"> </audio>');    
+    .bindPopup('<b>'+this.detail.name+'('+this.detail.mob+')</b><br/>'+this.type+'<br/><i>'+this.detail.feedback+'</i><br/><audio controls>  <source src='+this.file+' type="audio/wav"> </audio>');    
    }
   createMap() {
+    this.arrayBase64toBlob();
     this.map = new Leaflet.Map('mapId2').setView([this.detail.lat, this.detail.lng], 6);
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Kerala Radio',
@@ -85,6 +87,19 @@ export class ViewsurveyComponent implements OnInit {
    sanitize(url: string) {
     //  let aurl = URL.createObjectURL(this.detail.file);
     // return this.domSanitizer.bypassSecurityTrustUrl(aurl);
+  }
+
+  arrayBase64toBlob() {
+    let binaryString = window.atob(this.detail.file);
+    let binaryLength = binaryString.length;
+    let bytesa = new Uint8Array(binaryLength);
+
+    for (let i = 0; i < binaryLength; i++) {
+        let ascii = binaryString.charCodeAt(i);
+        bytesa[i] = ascii;
+    }
+    const blob = new Blob([bytesa]);
+    this.file = URL.createObjectURL(blob);
   }
 
 }

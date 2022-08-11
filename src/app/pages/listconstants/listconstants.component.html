@@ -101,8 +101,7 @@
           </span>
 <div *ngIf="gpsTrack">
         <div class="form-group"> 
-            <button mat-mini-fab nbButton status="primary" class='col-sm-12' (click)="dosubmit()">Submit</button>
-
+            <button mat-mini-fab nbButton status="primary" class='col-sm-12' (click)="dosubmit()">Submit</button><span class='error' *ngIf="!noError">Please fill all mandatory fields</span>
         </div>
       </div>
       

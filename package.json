@@ -45,6 +45,7 @@
     "@angular/service-worker": "^11.0.9",
     "@asymmetrik/ngx-leaflet": "^7.0.1",
     "@nebular/auth": "7.0.0",
+    "@nebular/date-fns": "^9.0.3",
     "@nebular/eva-icons": "^7.0.0",
     "@nebular/moment": "^9.0.2",
     "@nebular/security": "7.0.0",

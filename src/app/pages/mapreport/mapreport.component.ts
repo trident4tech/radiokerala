@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import * as Leaflet from 'leaflet';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigService } from '../../config.service';
 import {Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { NbDateService } from '@nebular/theme';
+
 
 
 @Component({
@@ -20,6 +22,8 @@ export class MapreportComponent implements OnInit {
     qual:any[];
     map: Leaflet.Map;
     public marker: any = '';
+    public fromdate:any;
+    public todate:any;
     public greenIcon = Leaflet.icon({
     iconUrl: '../../../../assets/icons/marker-green.png',
     /*shadowUrl: 'leaf-shadow.png'*/
@@ -45,12 +49,15 @@ export class MapreportComponent implements OnInit {
     lat : any='8.5241';
     lng :any='76.9366';
     url:string='';error;
-    constructor(private router: Router,
+     @ViewChild('item', { static: true }) accordion;
+    constructor(protected dateService: NbDateService<Date>,private router: Router,
     public http: HttpClient,private domSanitizer: DomSanitizer,public config: ConfigService) {}
     sanitize(url: string) {
         return this.domSanitizer.bypassSecurityTrustUrl(url);
     }
-
+  toggle() {
+    this.accordion.toggle();
+  }
    ngOnInit(): void {
     let roleid = localStorage.getItem('role');
     if (roleid!='1') {
@@ -124,5 +131,44 @@ export class MapreportComponent implements OnInit {
     }).addTo(this.map);
     this.leafletMap();
    }
+   async doSearch() {
+    var date = new Date();    
+    var enddate = new Date();    
+    if (this.fromdate!='undefined' && this.fromdate!=undefined)
+        date = this.fromdate;
+    if (this.todate!='undefined' && this.todate!=undefined)
+        enddate = this.todate;
+    var fdate = date.getFullYear()+'-'+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+             +('0' + date.getDate()).slice(-2) ;
+    var tdate = enddate.getFullYear()+'-'+ ('0' + (enddate.getMonth()+1)).slice(-2) + '-'
+             +('0' + enddate.getDate()).slice(-2) ;
+       
+     this.config.targeturl = this.config.apiUrl+'v1/survey/list';
+    let userId=this.config.doDecrypt(localStorage.getItem('userId'));
+    this.config.postdata = {
+       date : fdate,
+       tdate : tdate,
+       userid:userId,
+      token: this.config.doDecrypt(localStorage.getItem('token'))
+    };   
+    this.http.post(this.config.targeturl,this.config.postdata).subscribe(
+      (response) => {this.config.checkStatus(response['Status'],response['version']);
+        this.successResponseArray=[];
+        this.successResponseArray.push(response);
+        this.items=response['Data'];
+        this.map.remove(); 
+        this.createMap(); 
+      },
+      (error)=>{
+        console.log(error);
+      }
+    );
+  }
+  reset() {
+    this.fromdate = '';
+    this.todate = '';
+    this.map.remove();
+    this.loadData();
+  }
 
 }

@@ -1,9 +1,43 @@
 <nb-card>
-    <nb-card-header> Map Report</nb-card-header>
+    <nb-card-header><span class="float-left">
+      <h6> Map Report</h6>
+    </span> <span class="float-right"><button nbButton status="secondary" (click)="toggle()"><i
+          class="fa fa-filter"></i></button></span></nb-card-header>
     <nb-card-body>
+        <nb-accordion>
+      <nb-accordion-item #item>
+        <nb-accordion-item-body>
+          <h6>Filter</h6>
+          <div class="row mt-3">
+            <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <input readonly="" [nbDatepicker]="datepicker1" nbInput fullWidth placeholder="Select the From Date"
+                  name="fromdate" [(ngModel)]="fromdate" (ngModelChange)="doSearch()">
+                <nb-datepicker #datepicker1 format="dd\MM\yyyy"></nb-datepicker>
+              </div>
+            </div>
+            <div class="col-sm-3 d-flex align-items-center">
+              <div class="form-group">
+                <input readonly="" [nbDatepicker]="datepicker2" nbInput fullWidth placeholder="Select the To Date"
+                  name="todate" [(ngModel)]="todate" (ngModelChange)="doSearch()">
+                <nb-datepicker #datepicker2 format="dd\MM\yyyy"></nb-datepicker>
+              </div>
+            </div>
+            <div class="col-sm-3 ">
+              <button nbButton status="primary" name="searchTerm" (click)="doSearch()">Submit</button>
+              
+              &nbsp;<button nbButton status="secondary" name="filterTerm" (click)="reset()">Reset</button>  
+
+            </div>
+          </div>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+    <br />
+    <div class="row ">
 
         <div id="mapId2" class="col-sm-12"></div>
-
+</div>
 
 
 

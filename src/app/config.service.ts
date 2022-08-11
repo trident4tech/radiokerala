@@ -325,14 +325,14 @@ export class ConfigService {
   }
 
 
-  async checkStatus(status, version) {
+   async checkStatus(status,version) {
     if (version) {
-      localStorage.setItem('lver', version);
-      if (version != localStorage.getItem('cver') || localStorage.getItem('cver') == undefined || localStorage.getItem('cver') === null)
+      localStorage.setItem('lver',version);
+      if (version!=localStorage.getItem('cver') || localStorage.getItem('cver')==undefined || localStorage.getItem('cver')===null) 
         this.updateLatest();
     }
-    if (status == this.OTNO) {
-      this.router.navigateByUrl('/pages/miscellaneous/404');
+    if (status==this.OTNO) {
+       this.router.navigateByUrl('/pages/miscellaneous/404');
     }
   }
 
@@ -580,49 +580,52 @@ export class ConfigService {
     return true;
   }
   updateLatest() {
-    let json = localStorage.getItem('ticketDetails');//JSON.stringify(this.ticketDetails);
-    let verjson = localStorage.getItem('verifiedTicketDetails');
-    let usr = this.doDecrypt(localStorage.getItem('userId'));
-    if (!this.IsJsonString(json)) {
-      json = "";
-    }
-    if (!this.IsJsonString(verjson)) {
-      verjson = "";
-    }
-    this.http.post(this.apiUrl + 'v1/ticketing/data/localsync', {
-      'data': json,
-      'verdata': verjson,
-      'user': usr,
-    }).subscribe((response) => {
-      console.log('Updated');
-      this.http.post(this.apiUrl + 'v1/user/logout', {
-        userid: this.doDecrypt(localStorage.getItem('userId')),
-      })
-        .subscribe(
-          (response) => {
-            localStorage.removeItem('user');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userData');
-            localStorage.removeItem('menu');
-            localStorage.removeItem('username');
-            localStorage.removeItem('setUser');
-            localStorage.removeItem('roleId');
-            var values = [],
-              keys = Object.keys(localStorage),
-              i = keys.length;
-            var date = new Date();
-            var ldate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
-
-            while (i--) {
-              if (keys[i].indexOf('repData-') >= 0 && keys[i].indexOf(ldate) < 0)
-                localStorage.removeItem(keys[i]);
+       let json = localStorage.getItem('ticketDetails');//JSON.stringify(this.ticketDetails);
+            let verjson = localStorage.getItem('verifiedTicketDetails');
+            let usr = this.doDecrypt(localStorage.getItem('userId'));
+            if (!this.IsJsonString(json) ) {
+                json = "";
             }
-            window.location.reload();
-            this.router.navigateByUrl('/home');
-          });
-
-    });
-  }
+            if (!this.IsJsonString(verjson) ) {
+              verjson = "";
+          }
+          if (usr!='') {
+          this.http.post(this.apiUrl+'v1/ticketing/data/localsync',{
+            'data' : json,  
+            'verdata': verjson,
+            'user': usr,
+              }).subscribe( (response) => {
+                console.log('Updated');                
+                this.http.post(this.apiUrl + 'v1/user/logout', {
+    userid: this.doDecrypt(localStorage.getItem('userId')),
+  })
+    .subscribe(
+      (response) => {
+         localStorage.removeItem('user');
+        localStorage.removeItem('userId');
+          localStorage.removeItem('userData');
+          localStorage.removeItem('menu');
+          localStorage.removeItem('username');
+          localStorage.removeItem('setUser');
+          localStorage.removeItem('roleId');
+           var values = [],
+        keys = Object.keys(localStorage),
+        i = keys.length;
+        var date = new Date();
+        var ldate = date.getDate()+'-'+(date.getMonth()+1)+'-'+date.getFullYear();
+       
+        while ( i-- ) {
+         if (keys[i].indexOf('repData-')>=0 && keys[i].indexOf(ldate)<0)
+           localStorage.removeItem(keys[i]);
+        }
+         window.location.reload();
+         this.router.navigateByUrl('/home');
+      });
+               
+             });
+            }
+            
+    }
   async logoutUser() {
     this.http.post(this.apiUrl + 'v1/user/logout', {
       userid: this.doDecrypt(localStorage.getItem('userId')),
@@ -707,14 +710,40 @@ export class ConfigService {
     return txt;
   }
 
+  base64toBlob(file) {
+    let binaryString = window.atob(file);
+    let binaryLength = binaryString.length;
+    let bytesa = new Uint8Array(binaryLength);
 
+    for (let i = 0; i < binaryLength; i++) {
+        let ascii = binaryString.charCodeAt(i);
+        bytesa[i] = ascii;
+    }
+    const blob = new Blob([bytesa]);
+    return blob;  
+  }
   public doSync() {
     const formData = new FormData();
+    let binaryString;
+    let binaryLength;
+    let bytesa;
+    let ascii
+    let blob;
     let ticketDetails = JSON.parse(localStorage.getItem('ticketDetails'));
         let json = localStorage.getItem('ticketDetails');//JSON.stringify(this.ticketDetails);
         if (ticketDetails.length>0) {
           let i = 0;
           ticketDetails.forEach(function (val) {
+            binaryString = window.atob(val.file);
+            binaryLength = binaryString.length;
+            bytesa = new Uint8Array(binaryLength);
+
+            for (let j = 0; j < binaryLength; j++) {
+                ascii = binaryString.charCodeAt(j);
+                bytesa[j] = ascii;
+            }
+            blob = new Blob([bytesa]);
+
             formData.append("name["+i+"]", val.name);
             formData.append("mob["+i+"]", val.mob);
             formData.append("type["+i+"]", val.type);
@@ -724,7 +753,7 @@ export class ConfigService {
             formData.append("feedback["+i+"]", val.feedback);
             formData.append("acc["+i+"]", val.acc);
             formData.append("usr["+i+"]", val.usr);
-            formData.append("file["+i+"]", val.file); 
+            formData.append("file["+i+"]", blob); 
             formData.append("offline["+i+"]", val.offline);
             formData.append("dbdate["+i+"]" , val.dbdate);
             formData.append("date["+i+"]" , val.date);
@@ -738,7 +767,7 @@ export class ConfigService {
              this.checkStatus(response['Status'],response['version']);
              ticketDetails = [];
               let json = JSON.stringify(ticketDetails);
-              localStorage.setItem('ticketDetails',json); 
+              //localStorage.setItem('ticketDetails',json); 
               this.showSuccessToaster('The survey has been successfuly added ');           
             },
             (error)=>{

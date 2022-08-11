@@ -70,6 +70,8 @@ export class HomeComponent implements OnInit {
             this.successResponseArray.push(response);
             this.showPrgress = false;
             let ticketDetails = [];
+            localStorage.setItem('cver','');
+            localStorage.setItem('lver','');
             let json = JSON.stringify(ticketDetails);
             localStorage.setItem('ticketDetails', json);
             
@@ -96,6 +98,9 @@ export class HomeComponent implements OnInit {
               localStorage.setItem('username', this.successResponseArray[0]['username']);
               localStorage.setItem('user', userName.value);
               localStorage.setItem('deviceid' + this.successResponseArray[0]['userId'], this.successResponseArray[0]['singleloginhash']);
+              localStorage.setItem('cver',this.successResponseArray[0]['version']);
+              localStorage.setItem('lver',this.successResponseArray[0]['version']);
+              
              if (this.successResponseArray[0]['roleId']=='1') {
                 this.router.navigateByUrl('/mapreport');
               }
