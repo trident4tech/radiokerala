@@ -337,7 +337,6 @@ export class AddComponent implements OnInit {
           }
           console.log(this.draftArray);
           this.clearForm();
-          this.config.doSync();
           this.router.navigateByUrl('/pages/listdraft');
           this.config.showSuccessToaster("Survey saved as Draft..");
 
@@ -582,7 +581,6 @@ export class AddComponent implements OnInit {
               localStorage.setItem('offlineSubmited', JSON.stringify(this.draftArray))
             }
             this.deleteSurveyFromDraft()
-            this.config.doSync();
             console.log(this.draftArray);
             this.clearForm();
             this.config.showSuccessToaster("Survey Added Successfully..");

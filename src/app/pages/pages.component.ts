@@ -43,7 +43,7 @@ export class PagesComponent {
 			this.menu.forEach(element => {
 				element.hidden = false;
 				if (roleid=='1') {
-					if (element.title=='New Survey' || element.title=='Offline Data') {
+					if (element.title=='New Survey' || element.title=='Offline Surveys') {
 						element.hidden = true;
 					}
 				}

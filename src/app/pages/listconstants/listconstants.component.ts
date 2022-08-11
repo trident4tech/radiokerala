@@ -130,7 +130,8 @@ this.record.stop(this.processRecording.bind(this));
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
           this.accuracy = position.coords.accuracy;
-          this.createMap();
+          if (this.isConnected)
+            this.createMap();
         }
       },
         (error: PositionError) => console.log(error),{ 
@@ -185,7 +186,8 @@ this.record.stop(this.processRecording.bind(this));
     this.leafletMap();
    }
    ngOnDestroy(): void {
-    this.map.remove();
+    if (this.isConnected)
+      this.map.remove();
   }
   async dosubmit() { 
     localStorage.setItem('tname',this.name);

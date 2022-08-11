@@ -89,12 +89,24 @@
                   <textarea   rows="5" nbInput fullWidth  placeholder="Feedback" [(ngModel)]="feedback" name="feedback"></textarea>
             </div>
         </div>
+        <div class="col-sm-12 row form-group" *ngIf="!isConnected">
+             <label for="name" class="label col-sm-3 col-form-label">Latitude</label>
+             <div class="col-sm-9">
+               {{lat}}
+            </div>
+        </div>
+        <div class="col-sm-12 row form-group" *ngIf="!isConnected">
+             <label for="name" class="label col-sm-3 col-form-label">Longitude</label>
+             <div class="col-sm-9">
+               {{lng}}
+            </div>
+        </div>
         <br/>
 </div>
 <div *ngIf="!gpsTrack">
          <nb-alert status="danger">Please turn on the GPS of your device and reload the app.</nb-alert>
       </div>
-        <div id="mapId2" class="col-sm-12"></div><br/>
+        <div id="mapId2" class="col-sm-12" *ngIf="isConnected"></div><br/>
         <span
             *ngIf="errorResponseArray['gps']">
             <font class='error'>{{errorResponseArray['gps']}}</font>

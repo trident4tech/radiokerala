@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../config.service';
 import * as Leaflet from 'leaflet';
 import { DomSanitizer } from '@angular/platform-browser';
+import { map,startWith } from 'rxjs/operators';
+import { Subject, of,Subscription, Observable,Observer, fromEvent, merge } from 'rxjs';
+
 
 @Component({
   selector: 'ngx-viewsurvey',
@@ -44,8 +47,12 @@ export class ViewsurveyComponent implements OnInit {
   public type:any='';
   public quality:any='';
   public file='';
+  isConnected :boolean;
   constructor(private domSanitizer: DomSanitizer,protected ref: NbDialogRef<ViewsurveyComponent>,public config:ConfigService,public http: HttpClient) { 
    // this.config.checkAccesswith404('viewuser');
+    this.isConnected = true;  
+    this.createOnline$().subscribe(isOnline => this.isConnected = isOnline);
+    
   }
 
   ngOnInit(): void {
@@ -64,10 +71,13 @@ export class ViewsurveyComponent implements OnInit {
         this.type = 'Car Radio';
     else
         this.type ='Normal Radio';
-    this.createMap();
+      if (this.isConnected)
+        this.createMap();
+    this.arrayBase64toBlob();
   }
   dismiss() {
-    this.map.remove();
+    if (this.isConnected)
+      this.map.remove();
     this.ref.close();
   }
    ngOnDestroy(): void {
@@ -78,8 +88,7 @@ export class ViewsurveyComponent implements OnInit {
     .bindPopup('<b>'+this.detail.name+'('+this.detail.mob+')</b><br/>'+this.type+'<br/><i>'+this.detail.feedback+'</i><br/><audio controls>  <source src='+this.file+' type="audio/wav"> </audio>');    
     this.src= this.sanitize(this.url);
    }
-  createMap() {
-    this.arrayBase64toBlob();
+  createMap() {    
     this.map = new Leaflet.Map('mapId2').setView([this.detail.lat, this.detail.lng], 6);
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Kerala Radio',
@@ -102,6 +111,15 @@ export class ViewsurveyComponent implements OnInit {
     const blob = new Blob([bytesa]);
     this.file = URL.createObjectURL(blob);
     //this.src = "<audio controls>  <source src='"+this.sanitize(this.file)+"' type='audio/wav'> </audio>";
+  }
+  createOnline$() {
+    return merge<boolean>(
+      fromEvent(window, 'offline').pipe(map(() => false)),
+      fromEvent(window, 'online').pipe(map(() => true)),
+      new Observable((sub: Observer<boolean>) => {
+        sub.next(navigator.onLine);
+        sub.complete();
+      }));
   }
 
 }

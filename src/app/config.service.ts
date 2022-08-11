@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { Subject, Subscription, Observable } from 'rxjs';
+import { map,startWith } from 'rxjs/operators';
+import { Subject, of,Subscription, Observable,Observer, fromEvent, merge } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteComponent } from './pages/delete/delete.component';
@@ -9,6 +10,7 @@ import { HostListener } from '@angular/core';
 import { ConfirmComponent } from './pages/tickets/confirm/confirm.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+
 
 
 @Injectable({
@@ -151,6 +153,7 @@ export class ConfigService {
   public mapLat: any = "12.4996";
   public mapLng: any = "74.9869";
   public map: number=1;
+  isConnected :boolean;
 
 
   constructor(public domSanitizer: DomSanitizer, public dialogService: NbDialogService,
@@ -165,13 +168,16 @@ export class ConfigService {
     }
     this.apiUrl = "https://api.sandbox.ticketbuddy.in/";
     this.fileurl = this.apiUrl+this.fileurl;
-
+    this.isConnected = true;  
+    this.createOnline$().subscribe(isOnline => this.isConnected = isOnline);
+    
    // this.apiUrl = "https://jims.sandbox.webapiservices.in/api/";
 
 
     let host = this.hostname.replace('ticketbuddy.in', "");
     document.title = 'Kerala Radio';//host[0].toUpperCase() + host.substr(1).toLowerCase();
-    this.getSettingsData();
+    if (this.isConnected)
+      this.getSettingsData();
   }
   //method is used to encrypt and decrypt the text  
   doEncrypt(ctext) {
@@ -844,4 +850,13 @@ export class ConfigService {
   extractdistrict() {
     this.district = JSON.parse(localStorage.getItem('offlineDistrict'));
   }
+  createOnline$() {
+    return merge<boolean>(
+      fromEvent(window, 'offline').pipe(map(() => false)),
+      fromEvent(window, 'online').pipe(map(() => true)),
+      new Observable((sub: Observer<boolean>) => {
+      sub.next(navigator.onLine);
+      sub.complete();
+      }));
+    }
 }

@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
     let val = localStorage.getItem('userId');
     if (val != null && val != 'null') {
       this.getSettings();
-      this.config.doSync();
       this.router.navigateByUrl('/newsurvey');
     }
   }

@@ -25,9 +25,17 @@
             <div class="col-sm-12" *ngIf="detail.sr_feedback!=''">        
              {{detail.feedback}}
             </div>
-            <label for="name" class="label col-sm-12 col-form-label">Location</label>
-            <div class="col-sm-12">        
+            <label for="name" class="label col-sm-12 col-form-label" *ngIf="isConnected">Location</label>
+            <div class="col-sm-12" *ngIf="isConnected" >        
               <div id="mapId2" class="col-sm-12"></div>
+            </div>
+            <label for="name" class="label col-sm-12 col-form-label"  *ngIf="!isConnected">Latitude</label>
+            <div class="col-sm-12" *ngIf="!isConnected">        
+              {{detail.lat}}
+            </div>
+            <label for="name"  *ngIf="!isConnected"class="label col-sm-12 col-form-label" >Longitude</label>
+            <div class="col-sm-12"  *ngIf="!isConnected">        
+              {{detail.lng}}
             </div>
           </div>           
           
