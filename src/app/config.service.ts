@@ -166,6 +166,7 @@ export class ConfigService {
     else {
       this.apiUrl = "https://api." + this.hostname + "/";
     }
+    //this.apiUrl = "https://api.sandbox.survey.radiokeralam.com/";
     this.apiUrl = "https://api.sandbox.ticketbuddy.in/";
     this.fileurl = this.apiUrl+this.fileurl;
     this.isConnected = true;  
