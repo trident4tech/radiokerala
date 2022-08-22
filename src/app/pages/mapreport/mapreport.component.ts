@@ -58,7 +58,7 @@ export class MapreportComponent implements OnInit {
   toggle() {
     this.accordion.toggle();
   }
-   ngOnInit(): void {
+   ngOnInit(): void {   
     let roleid = localStorage.getItem('role');
     if (roleid!='1') {
       this.router.navigateByUrl('pages/newsurvey');
@@ -113,8 +113,12 @@ export class MapreportComponent implements OnInit {
         type = 'Car Radio';
     else
         type ='Normal Radio';
+    let str = '';
+    if (ticket.sr_feedback!='')
+      str = '<br/><i>'+ticket.sr_feedback+'</i>';
+    let distance = this.calcCrow(25.717071358032623,55.8113002355822,ticket.sr_lat,ticket.sr_lng).toFixed(1);
     Leaflet.marker([ticket.sr_lat,  ticket.sr_lng], { draggable: false, icon: this.mark }).addTo(this.map)
-    .bindPopup('<b>'+ticket.sr_name+'('+ticket.sr_mob+')</b><br/>'+type+'<br/><i>'+ticket.sr_feedback+'</i><br/><audio controls>  <source src='+this.config.fileurl+ticket.file_name+' type="audio/wav"> </audio>');
+    .bindPopup('<b>'+ticket.sr_name+'('+ticket.sr_mob+')</b><br/>'+type+str+'<br/><b>Distance from station:</b>'+distance+'km<br/><audio controls>  <source src='+this.config.fileurl+ticket.file_name+' type="audio/wav"> </audio>');
     });
 
    //  Leaflet.marker([this.lat,  this.lng], { draggable: false, icon: this.greenIcon }).addTo(this.map)
@@ -170,5 +174,30 @@ export class MapreportComponent implements OnInit {
     this.map.remove();
     this.loadData();
   }
+  
+
+
+
+    //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
+    calcCrow(lat1, lon1, lat2, lon2) 
+    {
+      var R = 6371; // km
+      var dLat = this.toRad(lat2-lat1);
+      var dLon = this.toRad(lon2-lon1);
+      var lat3 = this.toRad(lat1);
+      var lat4 = this.toRad(lat2);
+
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat3) * Math.cos(lat4); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+
+    // Converts numeric degrees to radians
+    toRad(Value) 
+    {
+        return Value * Math.PI / 180;
+    }
 
 }
