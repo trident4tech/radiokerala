@@ -40,6 +40,10 @@ export class MapreportComponent implements OnInit {
     iconUrl: '../../../../assets/icons/marker-yellow.png',
     /*shadowUrl: 'leaf-shadow.png'*/
     });
+   public blueIcon = Leaflet.icon({
+    iconUrl: '../../../../assets/icons/marker-blue.png',
+    /*shadowUrl: 'leaf-shadow.png'*/
+    });
      //Lets declare Record OBJ
     record;//Will use this flag for toggeling recording
     recording = false;//URL of Blob
@@ -119,6 +123,7 @@ export class MapreportComponent implements OnInit {
     let distance = this.calcCrow(25.717071358032623,55.8113002355822,ticket.sr_lat,ticket.sr_lng).toFixed(1);
     Leaflet.marker([ticket.sr_lat,  ticket.sr_lng], { draggable: false, icon: this.mark }).addTo(this.map)
     .bindPopup('<b>'+ticket.sr_name+'('+ticket.sr_mob+')</b><br/>'+type+str+'<br/><b>Distance from station:</b>'+distance+'km<br/><audio controls>  <source src='+this.config.fileurl+ticket.file_name+' type="audio/wav"> </audio>');
+    Leaflet.marker([25.717071358032623,  55.8113002355822], { draggable: false, icon: this.blueIcon }).addTo(this.map);
     });
 
    //  Leaflet.marker([this.lat,  this.lng], { draggable: false, icon: this.greenIcon }).addTo(this.map)
@@ -130,7 +135,7 @@ export class MapreportComponent implements OnInit {
   }
   createMap() {
     this.map = new Leaflet.Map('mapId2').setView([this.lat, this.lng], 6);
-    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?lang=en', {
       attribution: 'Kerala Radio',
     }).addTo(this.map);
     this.leafletMap();
